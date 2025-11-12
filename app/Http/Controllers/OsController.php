@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+
 
 class OsController extends Controller
 {
-
+    
     public function index(){
-        return view('ordem-servico.index');
+        return Inertia::render('Ordens/Index');
     }
 
     public function create(){
-        return view('ordem-servico.create');
+        return Inertia::render('Ordens/Create');
     }
     public function store(Request $request){
         // logica para salvar a OS no BD
     }
 
     public function show($id){
-        return view('ordem-servico.show');
+        return Inertia::render('Ordens/Show',[
+    ]);
     }
 
     public function edit($id){
