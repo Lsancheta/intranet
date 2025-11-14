@@ -10,20 +10,34 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
+
     resolve: (name) =>
         resolvePageComponent(
             `./pages/${name}.vue`,
-            import.meta.glob<DefineComponent>('./pages/**/*.vue'),
+            import.meta.glob<DefineComponent>('./pages/**/*.vue')
         ),
+
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .mount(el);
+        const vueApp = createApp({
+            render: () => h(App, props),
+        });
+
+        // 🌟 Layout global automático
+        vueApp.mixin({
+            methods: {
+                layout(Component) {
+                    return Component.layout || import('@/layouts/AppLayout.vue');
+                },
+            },
+        });
+
+        vueApp.use(plugin).mount(el);
     },
+
     progress: {
         color: '#4B5563',
     },
 });
 
-// This will set light / dark mode on page load...
+// 🌙 Define tema claro/escuro ao carregar a página
 initializeTheme();

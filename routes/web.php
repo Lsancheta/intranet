@@ -5,6 +5,9 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\OsController;
 use App\Http\Controllers\EstoqueController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,15 @@ Route::get('/test-db', function () {
 });
 /*
 |--------------------------------------------------------------------------
+| Rota de Login/Logout
+|--------------------------------------------------------------------------
+*/
+    Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', LogoutController::class)->name('logout');
+
+/*
+|--------------------------------------------------------------------------
 | Página inicial
 |--------------------------------------------------------------------------
 */
@@ -32,31 +44,39 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Ordens de Serviço
+| As OS e Estoque precisam estar autenticadas 
+|   e o servidor irá fazer essa verificação
 |--------------------------------------------------------------------------
 */
-Route::prefix('ordens')->name('ordens.')->group(function () {
+Route::middleware(['auth'])->group(function(){
+    /*
+    |--------------------------------------------------------------------------
+    | Ordens de Serviço
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('ordens')->name('ordens.')->group(function () {
 
-    Route::get('/', [OsController::class, 'index'])->name('index');
-    
-    Route::get('/nova', [OsController::class, 'create'])->name('create');
+        Route::get('/', [OsController::class, 'index'])->name('index');
+        
+        Route::get('/nova', [OsController::class, 'create'])->name('create');
 
-    Route::post('/', [OsController::class, 'store'])->name('store');
+        Route::post('/', [OsController::class, 'store'])->name('store');
 
-    Route::get('/{id}', [OsController::class, 'show'])->name('show');
+        Route::get('/{id}', [OsController::class, 'show'])->name('show');
 
-    Route::get('/{id}/edit', [OsController::class, 'edit'])->name('edit');
+        Route::get('/{id}/edit', [OsController::class, 'edit'])->name('edit');
 
-    Route::put('/{id}', [OsController::class, 'update'])->name('update');
+        Route::put('/{id}', [OsController::class, 'update'])->name('update');
 
-    Route::delete('/{id}', [OsController::class, 'destroy'])->name('destroy');
-});
+        Route::delete('/{id}', [OsController::class, 'destroy'])->name('destroy');
+    });
 
-/*
-|--------------------------------------------------------------------------
-| Estoque
-|--------------------------------------------------------------------------
-*/
-Route::prefix('estoque')->name('estoque.')->group(function () {
-    Route::get('/', [EstoqueController::class, 'index'])->name('index');
+    /*
+    |--------------------------------------------------------------------------
+    | Estoque
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('estoque')->name('estoque.')->group(function () {
+        Route::get('/', [EstoqueController::class, 'index'])->name('index');
+    });
 });
