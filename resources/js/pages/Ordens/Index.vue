@@ -10,7 +10,8 @@ const props = defineProps({
   ordens: {
     type: Array,
     required: true
-  }
+  },
+  alojamentos:Array
 })
 const showCreate = ref(false)
 function onSaved(){
@@ -62,7 +63,7 @@ function openCreate(){
       </table>
       <!-- MODAL DE CRIAÇAO DE OS-->
        <Modal v-if="showCreate" @close="showCreate = false">
-          <FormCreateOS @saved="onSaved" />
+          <FormCreateOS :alojamentos="props.alojamentos" @saved="onSaved" />
       </Modal>
     </div>
   </AppLayout>

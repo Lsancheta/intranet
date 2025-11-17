@@ -31,16 +31,7 @@ Route::get('/test-db', function () {
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/logout', LogoutController::class)->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| Página inicial
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +40,16 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function(){
+    /*
+    |--------------------------------------------------------------------------
+    | Página inicial
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/', function () {
+        return Inertia::render('Welcome', [
+            'canRegister' => Features::enabled(Features::registration()),
+        ]);
+    })->name('home');
     /*
     |--------------------------------------------------------------------------
     | Ordens de Serviço
@@ -69,6 +70,12 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/{id}', [OsController::class, 'update'])->name('update');
 
         Route::delete('/{id}', [OsController::class, 'destroy'])->name('destroy');
+        
+        Route::post('/{id}/comentario',[OsController::class, 'adicionarComentario'])
+        ->middleware('auth')
+        ->name('comentario');
+
+        Route::post('/{id}/foto',[OsController::class, 'adicionarFoto'])->name('foto');
     });
 
     /*
