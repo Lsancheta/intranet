@@ -15,11 +15,12 @@ class OrdemServico extends Model
         'titulo',
         'descricao',
         'status',
-        'prioridade',
+        'prioridade_id',
         'solicitante_id',
         'alojamento_id',
         'bloco_id',
         'quarto_id',
+        'status_id',
     ];
 
     public function solicitante(){
@@ -44,6 +45,25 @@ class OrdemServico extends Model
 
     public function fotos(){
         return $this -> hasMany(\App\Models\OsFoto::class, 'ordem_servico_id');
+    }
+
+    public function status(){
+        return $this->belongsTo(StatusOs::class,'status_id');
+    }
+
+    public function getStatusFormatadoAttribute(){
+
+        return match($this ->status->nome){
+            'aberto' => 'Aberta',
+            'em_andamento'=>'Em andamento',
+            'pendente'=>'Pendente',
+            'resolvido'=>'Concluída',
+            default=> 'Desconhecido'
+        };
+    }
+
+    public function prioridade(){
+        return $this->belongsTo(Prioridade::class);
     }
 
     protected $casts = [

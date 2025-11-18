@@ -9,7 +9,7 @@
             </h1>
 
             <div class="text-right text-sm">
-                <p><strong>Status:</strong> {{ ordem.status }}</p>
+                <p><strong>Status:</strong> {{ ordem.nome }}</p>
                 <p><strong>Data:</strong> {{ ordem.created_at }}</p>
             </div>
         </div>
@@ -91,9 +91,9 @@
             <div
                 v-for="foto in ordem.fotos"
                 :key="foto.id"
-                class="border rounded-lg overflow-hidden"
+                class="border rounded-lg overflow-hidden shadow-sm hover:shadow-lg"
             >
-                <img :src="`/storage/${foto.caminho}`" class="w-full">
+                <img :src="`/storage/${foto.caminho}`" class="w-full h-50 object-cover transition-transform duration-300 hover:scale-130 cursor-pointer">
             </div>
         </div>
         </div>

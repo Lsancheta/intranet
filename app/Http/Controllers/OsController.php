@@ -11,23 +11,46 @@ class OsController extends Controller
 {
     
     public function index(){
-        $ordens = OrdemServico::with('solicitante')->orderByDesc('created_at')->get();
+        //SLA de 3 dias 
+        \App\Models\OrdemServico::where('status_id','!=', 4) // ignorar OS resolvidas
+        ->where('status_id','!=', 3) // ignorar já pendentes
+        ->whereDate('created_at','<',now()->subDays(3))
+        ->update(['status_id'=>3]); // vai mudar para pendentes aquelas que passarem dos dias
+
+        $ordens = OrdemServico::with('solicitante', 'prioridade', 'status')
+            ->join('prioridades', 'ordens_servico.prioridade_id', '=', 'prioridades.id')
+            ->orderByRaw("
+                CASE 
+                    WHEN prioridades.nome = 'Alta' THEN 1
+                    WHEN prioridades.nome = 'Média' THEN 2
+                    ELSE 3
+                END
+            ")
+            ->orderByDesc('ordens_servico.created_at')
+            ->select('ordens_servico.*')
+            ->get();
+
         $alojamentos = \App\Models\Alojamento::with('blocos.quartos')->get();
+        $prioridades = \App\Models\Prioridade::all();
         return Inertia::render('Ordens/Index',[
             'ordens'=> $ordens,
             'alojamentos'=>$alojamentos,
+            'prioridades'=>$prioridades,
         ]);
     }
 
     public function create(){
-        return Inertia::render('Ordens/Create');
+        return Inertia::render('Ordens/Create',[
+            'prioridades'=> \App\Models\Prioridade::all(),
+            'alojamentos'=>\App\Models\Alojamento::with('blocos.quartos')->get()
+        ]);
     }
     public function store(Request $request){
         //dd($request->all());
         $data = $request->validate([
             'titulo' =>'required|string|max:255',
             'descricao'=>'required|string',
-            'prioridade'=>'required|string',
+            'prioridade_id'=>'required|exists:prioridades,id',
             'alojamento_id'=>'required|exists:alojamentos,id',
             'bloco_id'=>'required|exists:blocos,id',
             'quarto_id'=>'required|exists:quartos,id',
@@ -35,7 +58,7 @@ class OsController extends Controller
         ]);
         OrdemServico::create(array_merge($data,[
             'solicitante_id'=> auth()->id(),
-            'status'=>'Aberta', //Isso irá forçar a criação da OS em aberta.
+            'status_id'=>1, //Isso irá forçar a criação da OS em aberta de acordo com o BD.
         ]));
         //salvar imagem
         if ($request-> hasFile('fotos')){
@@ -50,18 +73,36 @@ class OsController extends Controller
         return redirect()->route('ordens.index')->with('Success', 'OS Criada com sucesso!');
     }
 
-    public function show($id){
-
+    public function show($id)
+    {
         $ordem = OrdemServico::with(
             'solicitante',
             'comentarios.user',
             'fotos'
-            )->findOrFail($id);
+        )->findOrFail($id);
 
-        return Inertia::render('Ordens/Show',[
-            'ordem'=>$ordem
+        // Se não estiver concluída (STATUS 4) e não estiver pendente ainda (STATUS 3)
+        if ($ordem->status_id !== 4) {
+
+            $dias = $ordem->created_at->diffInDays(now());
+
+            // Se passaram 3 dias e o status ainda NÃO é pendente
+            if ($dias >= 3 && $ordem->status_id !== 3) {
+
+                $ordem->update([
+                    'status_id' => 3 // pendente
+                ]);
+
+                // Atualiza o objeto em memória também
+                $ordem->status_id = 3;
+            }
+        }
+
+        return Inertia::render('Ordens/Show', [
+            'ordem' => $ordem
         ]);
     }
+
 
     public function edit($id){
         $ordem = OrdemServico::findOrFail($id);
@@ -105,12 +146,18 @@ class OsController extends Controller
         if (!auth()->check()){
             abort(403, "Usuário não autenticado");
         }
+        $ordem = \App\Models\OrdemServico::findOrFail($id);
 
+        //adicionar comentario
         \App\Models\ComentarioOs::create([
             'ordem_servico_id'=> $id,
             'user_id'=> auth()->id(),
             'comentario'=> $request->comentario,
         ]);
+
+        if($ordem->status_id === 1){
+            $ordem->update(['status_id'=> 2]);
+        }
 
         return back()->with('success','Comentário adicionado!');
     }

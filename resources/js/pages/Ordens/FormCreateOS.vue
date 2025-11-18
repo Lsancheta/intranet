@@ -4,7 +4,8 @@ import { ref } from "vue";
 
 // Props recebidas do Inertia
 const props = defineProps({
-    alojamentos: Array
+    alojamentos: Array,
+    prioridades: Array
 });
 
 // Formulário Inertia
@@ -14,7 +15,7 @@ const form = useForm({
     quarto_id: "",
     titulo: "",
     descricao: "",
-    prioridade: "baixa"
+    prioridade_id: ""
 });
 
 // Arrays dinâmicos
@@ -157,14 +158,14 @@ console.log(props.alojamentos);
                 <label class="block font-semibold mb-1">
                     Prioridade
                 </label>
-
-                <select
-                    class="border p-2 rounded w-full"
-                    v-model="form.prioridade"
-                >
-                    <option value="baixa">Baixa</option>
-                    <option value="média">Média</option>
-                    <option value="alta">Alta</option>
+                <select v-model="form.prioridade_id" class="border rounded p-2 w-full">
+                  <option value="">Selecione...</option>
+                  <option
+                   v-for="p in prioridades"
+                    :key="p.id"
+                    :value="p.id">
+                      {{ p.nome }}
+                  </option>
                 </select>
             </div>
 
