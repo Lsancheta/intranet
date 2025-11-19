@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function(){
     |--------------------------------------------------------------------------
     */
     Route::prefix('ordens')->name('ordens.')->group(function () {
-
+        //CRUD OS
         Route::get('/', [OsController::class, 'index'])->name('index');
         
         Route::get('/nova', [OsController::class, 'create'])->name('create');
@@ -71,11 +71,17 @@ Route::middleware(['auth'])->group(function(){
 
         Route::delete('/{id}', [OsController::class, 'destroy'])->name('destroy');
         
+        //adicionar comentario
         Route::post('/{id}/comentario',[OsController::class, 'adicionarComentario'])
         ->middleware('auth')
         ->name('comentario');
-
+        
+        //adicionar foto
         Route::post('/{id}/foto',[OsController::class, 'adicionarFoto'])->name('foto');
+
+        // finalizar OS
+        Route::post('/{id}/finalizar',[OsController::class, 'finalizarOs'])->name('finalizar');
+        
     });
 
     /*

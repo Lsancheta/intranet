@@ -19,6 +19,7 @@ class OsController extends Controller
 
         $ordens = OrdemServico::with('solicitante', 'prioridade', 'status')
             ->join('prioridades', 'ordens_servico.prioridade_id', '=', 'prioridades.id')
+            ->where('ordens_servico.status_id','!=', 4)
             ->orderByRaw("
                 CASE 
                     WHEN prioridades.nome = 'Alta' THEN 1
@@ -185,5 +186,26 @@ class OsController extends Controller
             'caminho'=>$path
         ]);
         return back()->with('success','Foto adicionada!');
+    }
+
+    //finalizar OS
+    public function finalizarOs(Request $request, $id){
+        $request->validate([
+            'comentario'=>'required|string|max:2000'
+        ]);
+        $ordem = OrdemServico::findOrFail($id);
+
+        // registrar o ultimo comentario para finalizar os
+        \App\Models\ComentarioOs::create([
+            'ordem_servico_id'=>$ordem->id,
+            'user_id'=>auth()->id(),
+            'comentario'=>$request->comentario,
+        ]);
+
+        // mudar a OS para resolvida id 4 no BD
+        $ordem->update(['status_id' => 4]);
+
+        return redirect()
+            ->route('ordens.index')->with('success','OS Concluída com Sucesso!');
     }
 }
