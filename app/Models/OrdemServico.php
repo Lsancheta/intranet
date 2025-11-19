@@ -28,15 +28,15 @@ class OrdemServico extends Model
     }
 
     public function alojamento(){
-        return $this->belongsTo(Alojamentos::class, 'alojamento_id');
+        return $this->belongsTo(Alojamento::class, 'alojamento_id');
     }
 
     public function bloco(){
-        return $this->belongsTo(Blocos::class, 'bloco_id');
+        return $this->belongsTo(Bloco::class, 'bloco_id');
     }
 
     public function quarto(){
-        return $this->belongsTo(Quartos::class, 'quarto_id');
+        return $this->belongsTo(Quarto::class, 'quarto_id');
     }
 
     public function comentarios(){

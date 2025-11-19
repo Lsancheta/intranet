@@ -75,10 +75,17 @@ class OsController extends Controller
 
     public function show($id)
     {
+
+        $alojamentos = \App\Models\Alojamento::with('blocos.quartos')->get();
+        $prioridades = \App\Models\Prioridade::all();        
         $ordem = OrdemServico::with(
             'solicitante',
+            'status',
+            'prioridade',
+            'bloco',
+            'quarto',
             'comentarios.user',
-            'fotos'
+            'fotos',
         )->findOrFail($id);
 
         // Se não estiver concluída (STATUS 4) e não estiver pendente ainda (STATUS 3)
@@ -99,7 +106,9 @@ class OsController extends Controller
         }
 
         return Inertia::render('Ordens/Show', [
-            'ordem' => $ordem
+            'ordem' => $ordem,
+            'prioridades'=> \App\Models\Prioridade::all(),
+            'alojamentos'=>\App\Models\Alojamento::with('blocos.quartos')->get()
         ]);
     }
 
