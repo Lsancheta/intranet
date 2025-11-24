@@ -1,0 +1,32 @@
+<div class="flex gap-4 mb-4">
+        <!-- TEXTO -->
+        <input type="text"
+            v-model="filtro.texto"
+            @input="buscar"
+            placeholder="Pesquisar..."
+            class="border rounded px-3 py-2 w-60">
+
+        <!-- SETOR -->
+        <select v-model="filtro.setor" @change="buscar" class="border rounded px-3 py-2">
+            <option value="">Setor</option>
+            <option v-for="s in setores" :value="s.id">{{ s.nome }}</option>
+        </select>
+
+        <!-- SOLICITANTE -->
+        <select v-model="filtro.solicitante" @change="buscar" class="border rounded px-3 py-2">
+            <option value="">Solicitante</option>
+            <option v-for="u in solicitantes" :value="u.id">{{ u.name }}</option>
+        </select>
+
+        <!-- STATUS -->
+        <select v-model="filtro.status" @change="buscar" class="border rounded px-3 py-2">
+            <option value="">Status</option>
+            <option v-for="s in status" :value="s.id">{{ s.nome }}</option>
+        </select>
+
+        <!-- PRIORIDADE -->
+        <select v-model="filtro.prioridade" @change="buscar" class="border rounded px-3 py-2">
+            <option value="">Prioridade</option>
+            <option v-for="p in prioridades" :value="p.id">{{ p.nome }}</option>
+        </select>
+      </div>

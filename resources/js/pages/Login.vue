@@ -2,7 +2,7 @@
 import { useForm } from '@inertiajs/vue3'
 
 const form = useForm({
-  email: '',
+  name: '',
   password: ''
 })
 
@@ -16,18 +16,19 @@ function submit() {
     <div class="bg-white rounded shadow p-6 w-full max-w-sm">
 
       <h1 class="text-2xl font-bold mb-4 text-center">Login</h1>
+      <h2 class="text-1xl font-bold mb-4 text-center">Pannela de Pedra Gestão de Alojamentos</h2>
 
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <label class="block mb-1">Email</label>
+          <label class="block mb-1">Nome</label>
           <input
-            type="email"
-            v-model="form.email"
+            type="text"
+            v-model="form.name"
             class="border rounded w-full px-3 py-2"
           />
-          <div v-if="form.errors.email" class="text-red-600 text-sm">
+          <!--<div v-if="form.errors.email" class="text-red-600 text-sm">
             {{ form.errors.email }}
-          </div>
+          </div>-->
         </div>
 
         <div class="mb-4">

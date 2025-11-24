@@ -10,7 +10,43 @@ use App\Models\OrdemServico;
 class OsController extends Controller
 {
     
-    public function index(){
+    public function index(Request $request){
+
+        //filtro de pesquisa via query string GET
+        $query = OrdemServico::query()->with('solicitante','prioridade','status','bloco','quarto');
+        
+        //filtro por setor (alojamento/bloco)
+        if ($request ->filled('setor')){
+            $query->where('bloco_id', $request->setor);
+        }
+
+        //filtro por solicitante
+        if($request->filled('solicitante')){
+            $query->where('solicitante_id', $request->solicitante);
+        }
+
+        // filtro por texto(titulo e descrição)
+        if ($request->filled('texto')){
+            $texto = $request->texto;
+            $query->where(function($q) use ($texto){
+                $q->where('titulo','LIKE', "%$texto%")
+                ->orwhere('descricao', 'LIKE', "%$texto%");
+            });
+        }
+
+        //filtro por status
+        if($request->filled('status')){
+            $query->where('status_id', $request->status);
+        }
+
+        //filtro por prioridade
+        if($request->filled('prioridade')){
+            $query->where('prioridade_id', $request->prioridade);
+        }
+
+        //paginação
+        $ordens = $query->orderBy('created_at', 'desc')->paginate(20);
+
         //SLA de 3 dias 
         \App\Models\OrdemServico::where('status_id','!=', 4) // ignorar OS resolvidas
         ->where('status_id','!=', 3) // ignorar já pendentes
@@ -37,7 +73,10 @@ class OsController extends Controller
             'ordens'=> $ordens,
             'alojamentos'=>$alojamentos,
             'prioridades'=>$prioridades,
+            'filtros'=>$request->only('setor','solicitante','texto','status','prioridade'),
         ]);
+
+
     }
 
     public function create(){
@@ -46,6 +85,7 @@ class OsController extends Controller
             'alojamentos'=>\App\Models\Alojamento::with('blocos.quartos')->get()
         ]);
     }
+
     public function store(Request $request){
         //dd($request->all());
         $data = $request->validate([
@@ -74,9 +114,7 @@ class OsController extends Controller
         return redirect()->route('ordens.index')->with('Success', 'OS Criada com sucesso!');
     }
 
-    public function show($id)
-    {
-
+    public function show($id){
         $alojamentos = \App\Models\Alojamento::with('blocos.quartos')->get();
         $prioridades = \App\Models\Prioridade::all();        
         $ordem = OrdemServico::with(
@@ -88,32 +126,27 @@ class OsController extends Controller
             'comentarios.user',
             'fotos',
         )->findOrFail($id);
-
         // Se não estiver concluída (STATUS 4) e não estiver pendente ainda (STATUS 3)
-        if ($ordem->status_id !== 4) {
+        if ($ordem->status_id !== 4 && $ordem->status_id !== 3) {
 
             $dias = $ordem->created_at->diffInDays(now());
 
-            // Se passaram 3 dias e o status ainda NÃO é pendente
-            if ($dias >= 3 && $ordem->status_id !== 3) {
-
+            // Se passaram 3 dias e o status ainda NÃO é em andamento
+            if ($dias >= 3 && $ordem->status_id !== 2) {
+                //atualiza o status
                 $ordem->update([
-                    'status_id' => 3 // pendente
+                'status_id' => 3 // pendente
                 ]);
-
-                // Atualiza o objeto em memória também
-                $ordem->status_id = 3;
+                $ordem->load('status');
             }
         }
-
         return Inertia::render('Ordens/Show', [
             'ordem' => $ordem,
             'prioridades'=> \App\Models\Prioridade::all(),
             'alojamentos'=>\App\Models\Alojamento::with('blocos.quartos')->get()
         ]);
     }
-
-
+    
     public function edit($id){
         $ordem = OrdemServico::findOrFail($id);
 
@@ -207,5 +240,17 @@ class OsController extends Controller
 
         return redirect()
             ->route('ordens.index')->with('success','OS Concluída com Sucesso!');
+    }
+
+    //listar OS finalizadas
+    public function finalizadas(){
+        $ordens = OrdemServico::with('solicitante','prioridade','status')
+        ->where('status_id', 4)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return Inertia::render('Ordens/Finalizadas',[
+            'ordens'=> $ordens
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Models\Setor;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // 🔹 adicionado
+        'setor_id',
     ];
 
     protected $hidden = [
@@ -44,5 +45,9 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    public function setores(){
+        return $this->belongsToMany(Setor::class, 'setor_user','user_id','setor_id');
     }
 }

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OsController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\LoginController;
@@ -56,6 +58,9 @@ Route::middleware(['auth'])->group(function(){
     |--------------------------------------------------------------------------
     */
     Route::prefix('ordens')->name('ordens.')->group(function () {
+        //Listas OS Finalizadas
+        Route::get('/finalizadas',[OsController::class, 'finalizadas']);
+        
         //CRUD OS
         Route::get('/', [OsController::class, 'index'])->name('index');
         
@@ -82,6 +87,7 @@ Route::middleware(['auth'])->group(function(){
         // finalizar OS
         Route::post('/{id}/finalizar',[OsController::class, 'finalizarOs'])->name('finalizar');
         
+
     });
 
     /*
@@ -89,7 +95,27 @@ Route::middleware(['auth'])->group(function(){
     | Estoque
     |--------------------------------------------------------------------------
     */
-    Route::prefix('estoque')->name('estoque.')->group(function () {
-        Route::get('/', [EstoqueController::class, 'index'])->name('index');
+    //Route::prefix('estoque')->name('estoque.')->group(function () {
+    //    Route::get('/', [EstoqueController::class, 'index'])->name('index');
+    //});
+
+    
+    
+    Route::prefix('admin')->name('admin.')->group(function () {
+
+        // Página inicial da Administração
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+             // usuários
+
     });
+
+    Route::prefix('index/usuarios')->name('usuarios.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/criar', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        #Route::get('/{id}/editar', [UserController::class, 'edit'])->name('edit');
+        #Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        #Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
 });

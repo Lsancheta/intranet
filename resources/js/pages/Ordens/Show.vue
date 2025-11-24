@@ -40,7 +40,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="comentario in ordem.comentarios" :key="comentario.id" class="border-b border-gray-300">
+                        <tr v-for="comentario in comentarioVisiveis" :key="comentario.id" class="border-b border-gray-300">
                             <td class="py-2 px-3">
                                 {{ comentario.user.name }}
                             </td>
@@ -53,6 +53,12 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="mt-3 text-center" v-if="ordem.comentarios.length > 4">
+                    <button @click="mostrarTodos = !mostrarTodos"
+                    class="text-blue-600 font-semibold hover:underline">
+                        {{ mostrarTodos ? 'Ver menos':'Ver todos os Comentários' }}
+                </button>
+                </div>
             </div>
 
             <!-- Adicionar Comentário -->
@@ -148,16 +154,17 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, computed} from "vue";
 import { useForm } from "@inertiajs/vue3";
 import AppLayout from '@/Layouts/AppLayout.vue'
 
 const modalAberta = ref(false);
-
+const mostrarTodos = ref(false);
 
 const props = defineProps({
     ordem: Object
 });
+
 
 const form = useForm({
     comentario: ""
@@ -202,6 +209,13 @@ function finalizarOS(){
         }
     );
 }
+
+const comentarioVisiveis = computed(() => {
+    if(mostrarTodos.value){
+        return props.ordem.comentarios;
+    }
+    return props.ordem.comentarios.slice(0, 4);
+});
 
 </script>
 

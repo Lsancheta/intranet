@@ -10,25 +10,28 @@ class LoginController extends Controller
 {
     public function showLogin()
     {
-        return Inertia::render('Login'); // sua página Login.vue
+        return Inertia::render('Login');
     }
 
     public function login(Request $request)
     {
+        // validação correta
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'name' => ['required', 'string'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // tenta autenticar
+        if (Auth::attempt([
+            'name' => $request->name,
+            'password' => $request->password,
+        ])) {
             $request->session()->regenerate();
-
-            // Redireciona para a home automaticamente
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'email' => 'Credenciais incorretas.',
+            'name' => 'Credenciais incorretas.',
         ]);
     }
 }

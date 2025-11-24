@@ -11,7 +11,8 @@ const props = defineProps({
     required: true
   },
   alojamentos: Array,
-  prioridades: Array
+  prioridades: Array,
+  filtro: Object,
 })
 
 const showCreate = ref(false)
@@ -19,6 +20,12 @@ const showCreate = ref(false)
 function onSaved() {
   showCreate.value = false
 }
+
+const filtro = ref({
+  texto: props.filtros?.texto??'',
+  prioridade: props.filtros?.prioridade??'',
+  
+})
 
 function statusColor(statusId) {
     switch (statusId) {
@@ -34,21 +41,48 @@ function statusColor(statusId) {
             return "bg-gray-100 text-gray-800";     // desconhecido
     }
 }
+
+function buscar(){
+  router.get(route('ordens.index'),filtro,{
+    preserveState: true,
+    replace: true
+  });
+}
+
 </script>
 
 <template>
   <AppLayout>
-    <div class="p-6">
-      <h1 class="text-2xl font-bold mb-4">Ordens de Serviço</h1>
-
-      <button
+    <template #header>
+      <div class="flex gap-4 align-left  justify-content space-around ">
+        <button
         type="button"
-        class="px-3 py-1 bg-blue-600 text-white rounded"
+        class="px-3 py-1 bg-blue-600 text-white rounded hover:text-gray-200"
         @click="showCreate = true"
       >
         NOVA OS
       </button>
 
+      <Link
+        href="/ordens/finalizadas"
+        class="px-3 py-1 bg-blue-600 text-white rounded hover:text-gray-200"
+      >
+        LISTAR OS
+      </Link>
+
+      <button
+        type="button"
+        class="px-3 py-1 bg-blue-600 text-white rounded hover:text-gray-200"
+        @click="showCreate = true"
+      >
+        NOVA OS
+      </button>
+
+      </div>
+    </template>
+    <div class="p-6">
+
+      
       <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow">
         <thead>
           <tr class="bg-gray-100 text-left">
