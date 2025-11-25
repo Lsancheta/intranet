@@ -106,7 +106,7 @@ console.log(props.alojamentos);
                 </select>
             </div>
 
-            <!-- Apartamento / Quarto -->
+            <!-- Apartamento / Quarto 
             <div class="mb-4">
                 <label class="block font-semibold mb-1">
                     Área
@@ -127,7 +127,7 @@ console.log(props.alojamentos);
                     </option>
                 </select>
             </div>
-
+            -->
             <!-- Título -->
             <div class="mb-4">
                 <label class="block font-semibold mb-1">

@@ -13,7 +13,7 @@ class OsController extends Controller
     public function index(Request $request){
 
         //filtro de pesquisa via query string GET
-        $query = OrdemServico::query()->with('solicitante','prioridade','status','bloco','quarto');
+        $query = OrdemServico::query()->with('solicitante','prioridade','status','bloco','quarto','alojamento');
         
         //filtro por setor (alojamento/bloco)
         if ($request ->filled('setor')){
@@ -53,7 +53,7 @@ class OsController extends Controller
         ->whereDate('created_at','<',now()->subDays(3))
         ->update(['status_id'=>3]); // vai mudar para pendentes aquelas que passarem dos dias
 
-        $ordens = OrdemServico::with('solicitante', 'prioridade', 'status')
+        $ordens = OrdemServico::with('solicitante', 'prioridade', 'status', 'alojamento', 'bloco', 'quarto')
             ->join('prioridades', 'ordens_servico.prioridade_id', '=', 'prioridades.id')
             ->where('ordens_servico.status_id','!=', 4)
             ->orderByRaw("
@@ -94,7 +94,7 @@ class OsController extends Controller
             'prioridade_id'=>'required|exists:prioridades,id',
             'alojamento_id'=>'required|exists:alojamentos,id',
             'bloco_id'=>'required|exists:blocos,id',
-            'quarto_id'=>'required|exists:quartos,id',
+            'quarto_id'=>'nullable|exists:quartos,id',
             'fotos.*'=> 'image|mimes:jpg,jpeg,png|max:2048'
         ]);
         OrdemServico::create(array_merge($data,[

@@ -20,7 +20,7 @@
             <!-- Descrição -->
             <div class="mt-6 border-b pb-4">
                 <div class="text-left text-sl">
-                    <p><strong>Área:</strong> {{ ordem.bloco.nome }}, {{ ordem.quarto.numero }}</p>
+                    <p><strong>Área:</strong> {{ ordem.bloco.nome }}</p>
                 </div>
                 <h2 class="font-semibold mb-2 text-lg">Descrição</h2>
                 <p class="text-gray-700">{{ ordem.descricao }}</p>

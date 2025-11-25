@@ -88,6 +88,8 @@ function buscar(){
           <tr class="bg-gray-100 text-left">
             <th class="py-2 px-4 border-b">N° OS</th>
             <th class="py-2 px-4 border-b">Solicitação</th>
+            <th class="py-2 px-4 border-b">Alojamento</th>
+            <th class="py-2 px-4 border-b">Setor</th>
             <th class="py-2 px-4 border-b">Prioridade</th>
             <th class="py-2 px-4 border-b">Status</th>
             <th class="py-2 px-4 border-b">Solicitante</th>
@@ -108,6 +110,8 @@ function buscar(){
             </td>
 
             <td class="py-2 px-4 border-b">{{ ordem.titulo }}</td>
+            <td class="py-2 px-4 border-b">{{ ordem.alojamento?.nome}}</td>
+            <td class="py-2 px-4 border-b">{{ ordem.bloco?.nome}}</td>
 
             <!-- PRIORIDADE -->
             <td class="py-2 px-1 border-b">
