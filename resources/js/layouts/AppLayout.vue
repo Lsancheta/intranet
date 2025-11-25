@@ -18,11 +18,10 @@ function toggleDropdown(name) {
     ======================== -->
     <div class="bg-blue-700 text-white flex justify-between items-center px-6 py-2 text-sm">
       <div class="font-semibold text-base">
-        Seu Logotipo Aqui
+        PANNELA DE PEDRA v0.1
       </div>
 
       <div class="flex items-center space-x-4">
-        <span class="bg-white/20 px-2 rounded text-xs">🔔 7</span>
         <span class="font-medium">{{ $page.props.auth.user.name }}</span>
         <Link href="/logout" method="post" as="button" class="hover:underline">Sair</Link>
 
