@@ -22,7 +22,7 @@ class UserController extends Controller
             'setores' => Setor::all()
         ]);
     }
-
+    // criar
     public function store(Request $request)
     {
        // dd($request->all());
@@ -42,7 +42,53 @@ class UserController extends Controller
 
         $user->setores()->sync($data['setores']);
 
-        return redirect()->route('admin.usuarios.index')
+        return redirect()->route('usuarios.index')
             ->with('success', 'Usuário criado com sucesso!');
+    }
+    //update
+    //update
+    public function edit($id){
+        $user = User::with('setores')->findOrFail($id);
+
+        return Inertia::render('Admin/Usuarios/Editar', [
+            'user' => $user,
+            'setores' => Setor::all()
+        ]);
+    }
+
+    public function update(Request $request, $id){
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'nullable|email',
+            'password' => 'nullable|min:4',
+            'setores' => 'array|required',
+            'setores.*' => 'exists:setores,id'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password']
+                ? Hash::make($data['password'])
+                : $user->password
+        ]);
+
+        $user->setores()->sync($data['setores']);
+
+        return redirect()
+            ->route('usuarios.index')
+            ->with('success', 'Usuário atualizado com sucesso!');
+    }
+
+    
+
+    //delete
+    public function destroy($id){
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->back()->with('Success, Usuário removido.');
     }
 }

@@ -113,9 +113,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/criar', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');
-        #Route::get('/{id}/editar', [UserController::class, 'edit'])->name('edit');
-        #Route::put('/{id}', [UserController::class, 'update'])->name('update');
-        #Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}/editar', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
     });
 
 });

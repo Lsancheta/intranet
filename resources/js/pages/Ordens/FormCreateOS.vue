@@ -87,14 +87,14 @@ console.log(props.alojamentos);
 
             <!-- Bloco -->
             <div class="mb-4">
-                <label class="block font-semibold mb-1">Bloco</label>
+                <label class="block font-semibold mb-1">Setor</label>
 
                 <select
                     class="border p-2 rounded w-full"
                     v-model="form.bloco_id"
                     @change="selecionarBloco"
                 >
-                    <option value="">Selecione o Bloco</option>
+                    <option value="">Selecione o Setor</option>
 
                     <option
                         v-for="b in blocos"
@@ -109,14 +109,14 @@ console.log(props.alojamentos);
             <!-- Apartamento / Quarto -->
             <div class="mb-4">
                 <label class="block font-semibold mb-1">
-                    Apartamento
+                    Área
                 </label>
 
                 <select
                     class="border p-2 rounded w-full"
                     v-model="form.quarto_id"
                 >
-                    <option value="">Selecione o Apartamento</option>
+                    <option value="">Selecione a Área</option>
 
                     <option
                         v-for="q in quartos"
