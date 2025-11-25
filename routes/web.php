@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function(){
     | Ordens de Serviço
     |--------------------------------------------------------------------------
     */
-    Route::prefix('ordens')->name('ordens.')->group(function () {
+    Route::middleware(['auth','setor:1,2,3'])->prefix('ordens')->name('ordens.')->group(function () {
         //Listas OS Finalizadas
         Route::get('/finalizadas',[OsController::class, 'finalizadas']);
         
@@ -95,13 +95,13 @@ Route::middleware(['auth'])->group(function(){
     | Estoque
     |--------------------------------------------------------------------------
     */
-    //Route::prefix('estoque')->name('estoque.')->group(function () {
+    //Route::middleware(['auth','setor:1,2,3,4'])->prefix('estoque')->name('estoque.')->group(function () {
     //    Route::get('/', [EstoqueController::class, 'index'])->name('index');
     //});
 
     
     
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['auth','setor:1'])->prefix('admin')->name('admin.')->group(function () {
 
         // Página inicial da Administração
         Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function(){
 
     });
 
-    Route::prefix('index/usuarios')->name('usuarios.')->group(function () {
+    Route::middleware(['auth','setor:1'])->prefix('index/usuarios')->name('usuarios.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/criar', [UserController::class, 'create'])->name('create');
         Route::post('/', [UserController::class, 'store'])->name('store');

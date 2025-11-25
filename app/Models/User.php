@@ -50,4 +50,10 @@ class User extends Authenticatable
     public function setores(){
         return $this->belongsToMany(Setor::class, 'setor_user','user_id','setor_id');
     }
+    public function inSetor($setores){
+        if(!is_array($setores)){
+            $setores = [$setores];
+        }
+        return $this->Setores()->whereIn('setor_id',$setores)->exists();
+    }
 }
