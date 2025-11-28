@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{b as n,o as r,a as t}from"./app-B2ycCGJK.js";const s={};function a(c,e){return r(),n("div",null,[...e[0]||(e[0]=[t("h1",null,"Estoque - Página em construção",-1)])])}const m=o(s,[["render",a]]);export{m as default};

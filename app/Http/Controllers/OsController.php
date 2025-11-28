@@ -47,6 +47,7 @@ class OsController extends Controller
         //paginação
         $ordens = $query->orderBy('created_at', 'desc')->paginate(20);
 
+        
         //SLA de 3 dias 
         \App\Models\OrdemServico::where('status_id','!=', 4) // ignorar OS resolvidas
         ->where('status_id','!=', 3) // ignorar já pendentes
@@ -87,6 +88,7 @@ class OsController extends Controller
     }
 
     public function store(Request $request){
+        //dd($ordens);
         //dd($request->all());
         $data = $request->validate([
             'titulo' =>'required|string|max:255',
@@ -207,8 +209,9 @@ class OsController extends Controller
 
     //Adicionar foto
     public function adicionarFoto(Request $request, $id){
+        //dd($request->all(), $request->file('foto'));
         $request->validate([
-            'foto'=>'required|image|mimes:jpg,jpeg,png|max:2048'
+            'foto'=>'required|image|mimes:jpg,jpeg,png|max:10048'
         ]);
 
         $ordem = OrdemServico::findOrFail($id);
@@ -218,7 +221,11 @@ class OsController extends Controller
             'ordem_servico_id' => $ordem->id,
             'caminho'=>$path
         ]);
-        return back()->with('success','Foto adicionada!');
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Foto adicionada!');
     }
 
     //finalizar OS

@@ -72,9 +72,133 @@ function buscar() {
         </template>
 
         <!-- CONTEÚDO -->
-        <div class="p-6">
-            <table class="w-full bg-white shadow rounded-lg overflow-hidden">
-                <thead class="bg-gray-100">
+        <div class="p-6"><!-- iSSO AQUI ENGLOBA A MODAL, CUIDADO--> 
+            <!-- ====== DESKTOP – TABELA ====== -->
+            <div class="hidden md:block">
+                <table class="w-full bg-white text-black shadow rounded-lg overflow-hidden">
+                    <thead class="bg-gray-300">
+                        <tr>
+                            <th class="py-2 px-4 text-left">N°</th>
+                            <th class="py-2 px-4 text-left">Solicitação</th>
+                            <th class="py-2 px-4 text-left">Alojamento</th>
+                            <th class="py-2 px-4 text-left">Setor</th>
+                            <th class="py-2 px-4 text-left">Prioridade</th>
+                            <th class="py-2 px-4 text-left">Status</th>
+                            <th class="py-2 px-4 text-left">Solicitante</th>
+                            <th class="py-2 px-4 text-left">Data</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr
+                            v-for="ordem in props.ordens"
+                            :key="ordem.id"
+                            class="border-b hover:bg-gray-50 cursor-pointer"
+                        >
+                            <td class="py-2 px-4">
+                                <Link :href="`/ordens/${ordem.id}`" class="text-blue-600 hover:underline">
+                                    {{ ordem.id }}
+                                </Link>
+                            </td>
+
+                            <td class="py-2 px-4">{{ ordem.titulo }}</td>
+                            <td class="py-2 px-4">{{ ordem.alojamento?.nome }}</td>
+                            <td class="py-2 px-4">{{ ordem.bloco?.nome }}</td>
+
+                            <td class="py-2 px-4">
+                                <span
+                                    class="px-3 py-1 rounded text-white text-sm"
+                                    :style="{ backgroundColor: ordem.prioridade?.cor ?? '#777' }"
+                                >
+                                    {{ ordem.prioridade?.nome ?? "Sem prioridade" }}
+                                </span>
+                            </td>
+
+                            <td class="py-2 px-4">
+                                <span
+                                    :class="`${statusColor(ordem.status_id)} px-3 py-1 rounded-full text-sm font-semibold`"
+                                >
+                                    {{ ordem.status.nome }}
+                                </span>
+                            </td>
+
+                            <td class="py-2 px-4">{{ ordem.solicitante?.name ?? "---" }}</td>
+                            <td class="py-2 px-4">{{ ordem.created_at }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- ====== MOBILE – CARDS ====== -->
+            <div class="md:hidden space-y-3">
+                <Link
+                    v-for="ordem in props.ordens"
+                    :key="ordem.id"
+                    :href="`/ordens/${ordem.id}`"
+                    class="block bg-white shadow rounded-lg p-4 border active:bg-gray-50"
+                >
+                    <!-- Cabeçalho -->
+                    <div class="flex justify-between">
+                        <h2 class="font-semibold text-lg">{{ ordem.titulo }}</h2>
+
+                        <span
+                            :class="`${statusColor(ordem.status_id)} px-2 py-1 rounded-full text-xs`"
+                        >
+                            {{ ordem.status.nome }}
+                        </span>
+                    </div>
+
+                    <!-- Grid pequeno com informações -->
+                    <div class="mt-2 text-sm text-gray-700">
+                        <div class="flex justify-between">
+                            <span class="font-semibold">Alojamento:</span>
+                            <span>{{ ordem.alojamento?.nome }}</span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span class="font-semibold">Setor:</span>
+                            <span>{{ ordem.bloco?.nome }}</span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span class="font-semibold">Criado em:</span>
+                            <span>{{ ordem.created_at }}</span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span class="font-semibold">Prioridade:</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-white"
+                                :style="{ backgroundColor: ordem.prioridade?.cor ?? '#777' }"
+                            >
+                                {{ ordem.prioridade?.nome ?? "—" }}
+                            </span>
+                        </div>
+                    </div>
+                </Link>
+            </div>
+
+
+            <!-- MODAL PARA CRIAR OS -->
+            <Modal v-if="showCreate" @close="showCreate = false">
+                <FormCreateOS
+                    :alojamentos="props.alojamentos"
+                    :prioridades="props.prioridades"
+                    @saved="onSaved"
+                />
+            </Modal>
+        </div>
+    </AppLayout>
+</template>
+
+
+<!--
+=====================
+TABLE ANTERIOR
+====================
+<table class="w-full bg-white text-black shadow rounded-lg overflow-hidden">
+                <thead class="bg-gray-300">
                     <tr>
                         <th class="py-2 px-4 text-left">N°</th>
                         <th class="py-2 px-4 text-left">Solicitação</th>
@@ -112,7 +236,7 @@ function buscar() {
                             {{ ordem.bloco?.nome }}
                         </td>
 
-                        <!-- PRIORIDADE -->
+                        <!-- PRIORIDADE 
                         <td class="py-2 px-4">
                             <span
                                 class="px-3 py-1 rounded text-white text-sm"
@@ -122,7 +246,7 @@ function buscar() {
                             </span>
                         </td>
 
-                        <!-- STATUS -->
+                        <!-- STATUS 
                         <td class="py-2 px-4">
                             <span
                                 :class="`${statusColor(
@@ -143,15 +267,4 @@ function buscar() {
                     </tr>
                 </tbody>
             </table>
-
-            <!-- MODAL PARA CRIAR OS -->
-            <Modal v-if="showCreate" @close="showCreate = false">
-                <FormCreateOS
-                    :alojamentos="props.alojamentos"
-                    :prioridades="props.prioridades"
-                    @saved="onSaved"
-                />
-            </Modal>
-        </div>
-    </AppLayout>
-</template>
+-->

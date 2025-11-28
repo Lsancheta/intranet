@@ -9,8 +9,8 @@ function toggleMobile() {
 }
 </script>
 
-<template>
-  <div class="min-h-screen flex flex-col bg-gray-100">
+<template class="min-h-screen w-full max-w-full flex flex-col bg-gray-100">
+  <div >
 
     <!-- =======================
          BARRA SUPERIOR
@@ -74,7 +74,7 @@ function toggleMobile() {
         <Link href="#" class="block py-2 border-b border-white/20">COZINHA</Link>
         <Link href="/admin/" class="block py-2 border-b border-white/20">ADMINISTRAÇÃO</Link>
 
-        <Link href="/logout" method="post" as="button" class="block py-2 text-red-200 font-normal mt-3">
+        <Link href="/logout" method="post" as="button" class="block py-2 text-red-300 font-normal mt-3">
           Sair
         </Link>
       </div>
@@ -92,9 +92,9 @@ function toggleMobile() {
 
 
     <!-- =======================
-         CONTEÚDO
+         CONTEÚDO  p-4 md:p-6
     ======================== -->
-    <main class="p-4 md:p-6">
+    <main class="px-4 sm:px-6 lg:px-8 w-full max-w-full">
       <slot />
     </main>
 

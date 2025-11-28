@@ -5,6 +5,12 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+
+    server:{
+        https: false,
+        host: true,
+        strictPort: true,
+    },
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],

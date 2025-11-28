@@ -92,6 +92,8 @@
                 <h2 class="font-semibold mb-2 text-lg">Adicionar Foto</h2>
                 <input
                     type="file"
+                    accept="image/*"
+                    capture="enviroment"
                     @change="e => formFoto.foto = e.target.files[0]"
                     class="w-full border rounded-lg p-2"
                 >
@@ -181,12 +183,91 @@ const formFoto = useForm({
     foto: null
 })
 
-function enviarFoto(){
-    formFoto.post(route("ordens.foto",props.ordem.id),{
-        forceFormData: true,
-        onSuccess:()=>formFoto.reset()
+//function enviarFoto(){
+//
+//    const fd = new FormData();
+//    fd.append("foto", formFoto.foto);
+//    formFoto.post(route("ordens.foto",props.ordem.id),{
+//        forceFormData: true,
+//        preserveScroll: true,
+//        onSuccess:()=>formFoto.reset(),
+//        onError:(e)=>console.log("ERRO MOBILE:", e)
+//    });
+//}
+async function enviarFoto() {
+    if (!formFoto.foto) {
+        console.log("Nenhuma foto selecionada");
+        return;
+    }
+
+    try {
+        // 👉 1. Comprimir a foto antes do envio
+        const compressed = await compressImage(formFoto.foto, 0.6, 1280);
+
+        const fd = new FormData();
+        fd.append("foto", compressed);
+
+        // 👉 2. Sobrescreve apenas o arquivo no form
+        formFoto.foto = compressed;
+
+        // 👉 3. Enviar para o backend
+        formFoto.post(route("ordens.foto", props.ordem.id), {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => formFoto.reset(),
+            onError: (e) => console.log("ERRO MOBILE:", e)
+        });
+
+    } catch (error) {
+        console.log("Erro ao comprimir a imagem", error);
+    }
+}
+
+
+//função para comprimir imagem e nao perder tanta qualidade
+function compressImage(file, quality = 0.6, maxWidth = 1280) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                const scaleFactor = maxWidth / img.width;
+                canvas.width = maxWidth;
+                canvas.height = img.height * scaleFactor;
+
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob(
+                    (blob) => {
+                        if (blob) {
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg",
+                                lastModified: Date.now()
+                            });
+                            resolve(compressedFile);
+                        } else {
+                            reject(new Error("Falha ao comprimir"));
+                        }
+                    },
+                    "image/jpeg",
+                    quality
+                );
+            };
+
+            img.onerror = () => reject("Erro ao carregar imagem");
+        };
+
+        reader.onerror = () => reject("Erro ao ler arquivo");
+        reader.readAsDataURL(file);
     });
 }
+
 
 // modal de finalizar a os
 

@@ -47,19 +47,24 @@ function submit() {
     });
 }
 </script>
-
 <template>
-    <div class="p-6 bg-white rounded-lg shadow-md w-[550px]">
-        <h2 class="text-xl font-bold mb-4 text-gray-700">
+    <!-- Wrapper responsivo -->
+    <div
+        class="p-6 bg-white rounded-lg shadow-md 
+               w-full max-w-lg mx-auto
+               md:w-[550px]"
+    >
+        <h2 class="text-xl font-bold mb-4 text-gray-700 text-center md:text-left">
             Criar Ordem de Serviço
         </h2>
 
         <form @submit.prevent="submit" class="space-y-4">
+
             <!-- Alojamento -->
             <div>
-                <label class="font-medium">Alojamento</label>
+                <label class="font-medium text-sm md:text-base">Alojamento</label>
                 <select
-                    class="border p-2 rounded w-full"
+                    class="border p-2 rounded w-full text-sm md:text-base"
                     v-model="form.alojamento_id"
                     @change="selecionarAlojamento"
                 >
@@ -76,9 +81,9 @@ function submit() {
 
             <!-- Bloco -->
             <div>
-                <label class="font-medium">Setor</label>
+                <label class="font-medium text-sm md:text-base">Setor</label>
                 <select
-                    class="border p-2 rounded w-full"
+                    class="border p-2 rounded w-full text-sm md:text-base"
                     v-model="form.bloco_id"
                     @change="selecionarBloco"
                 >
@@ -91,29 +96,29 @@ function submit() {
 
             <!-- Título -->
             <div>
-                <label class="font-medium">Título da OS</label>
+                <label class="font-medium text-sm md:text-base">Título da OS</label>
                 <input
                     type="text"
-                    class="border p-2 rounded w-full"
+                    class="border p-2 rounded w-full text-sm md:text-base"
                     v-model="form.titulo"
                 />
             </div>
 
             <!-- Descrição -->
             <div>
-                <label class="font-medium">Descrição</label>
+                <label class="font-medium text-sm md:text-base">Descrição</label>
                 <textarea
-                    class="border p-2 rounded w-full h-24"
+                    class="border p-2 rounded w-full h-24 text-sm md:text-base"
                     v-model="form.descricao"
                 ></textarea>
             </div>
 
             <!-- Prioridade -->
             <div>
-                <label class="font-medium">Prioridade</label>
+                <label class="font-medium text-sm md:text-base">Prioridade</label>
                 <select
                     v-model="form.prioridade_id"
-                    class="border p-2 rounded w-full"
+                    class="border p-2 rounded w-full text-sm md:text-base"
                 >
                     <option value="">Selecione...</option>
                     <option
@@ -128,7 +133,11 @@ function submit() {
 
             <!-- Botão -->
             <button
-                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 text-lg"
+                class="
+                    w-full bg-blue-600 text-white py-2 rounded 
+                    hover:bg-blue-700 text-base
+                    md:text-lg
+                "
             >
                 Criar OS
             </button>
