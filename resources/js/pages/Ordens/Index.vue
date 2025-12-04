@@ -80,7 +80,7 @@ function buscar() {
                         <tr>
                             <th class="py-2 px-4 text-left">N°</th>
                             <th class="py-2 px-4 text-left">Solicitação</th>
-                            <th class="py-2 px-4 text-left">Alojamento</th>
+                            <th class="py-2 px-4 text-left">Condomínio</th>
                             <th class="py-2 px-4 text-left">Setor</th>
                             <th class="py-2 px-4 text-left">Prioridade</th>
                             <th class="py-2 px-4 text-left">Status</th>

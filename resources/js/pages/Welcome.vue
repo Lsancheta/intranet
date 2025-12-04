@@ -23,17 +23,16 @@ import AppLayout from '@/Layouts/AppLayout.vue'
           <div class="py-3">
             <h3 class="font-semibold text-gray-800">Atualização do Sistema</h3>
             <p class="text-gray-600 text-sm">
-              A nova versão da intranet será publicada amanhã às 18h. O sistema poderá ficar indisponível por alguns minutos.
+              Adicionado a informação dos Alojamentos na descrição da OS.
             </p>
-            <span class="text-xs text-gray-400">Postado em: 12/11/2025</span>
+            <span class="text-xs text-gray-400">Postado em: 03/12/2025</span>
           </div>
-
           <div class="py-3">
-            <h3 class="font-semibold text-gray-800">Reunião da Equipe Técnica</h3>
+            <h3 class="font-semibold text-gray-800">Atualização do Sistema</h3>
             <p class="text-gray-600 text-sm">
-              Reunião marcada para quinta-feira às 9h no escritório principal. Compareçam pontualmente.
+              A versão de teste do sistema iniciou no dia 02/12/2025 as 17:00 com a equipe de manutenção.
             </p>
-            <span class="text-xs text-gray-400">Postado em: 11/11/2025</span>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
 
           <div class="py-3">
@@ -41,7 +40,14 @@ import AppLayout from '@/Layouts/AppLayout.vue'
             <p class="text-gray-600 text-sm">
               As Ordens de Serviço agora deverão ser cadastradas diretamente pelo sistema até o final do expediente.
             </p>
-            <span class="text-xs text-gray-400">Postado em: 10/11/2025</span>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
+          </div>
+          <div class="py-3">
+            <h3 class="font-semibold text-gray-800">Atualização do Sistema</h3>
+            <p class="text-gray-600 text-sm">
+              Bug das fotos resolvido, agora as fotos estão sendo salvas e mostradas corretamente..
+            </p>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
         </div>
       </section>

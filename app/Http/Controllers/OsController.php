@@ -127,6 +127,7 @@ class OsController extends Controller
             'quarto',
             'comentarios.user',
             'fotos',
+            'alojamento',
         )->findOrFail($id);
         // Se não estiver concluída (STATUS 4) e não estiver pendente ainda (STATUS 3)
         if ($ordem->status_id !== 4 && $ordem->status_id !== 3) {
