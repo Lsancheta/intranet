@@ -1,3 +1,6 @@
+import route from '../../vendor/tightenco/ziggy/dist/js/route.js';
+window.route = route;
+
 import './bootstrap';
 import '../css/app.css';
 

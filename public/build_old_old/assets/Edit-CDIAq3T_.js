@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{b as t,o as r,a as n}from"./app-DZv3zm9P.js";const s={};function a(c,e){return r(),t("div",null,[...e[0]||(e[0]=[n("h1",null,"Edite OS - Página em construção",-1)])])}const d=o(s,[["render",a]]);export{d as default};

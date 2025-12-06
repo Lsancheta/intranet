@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function(){
     */
     Route::middleware(['auth','setor:1,2,3'])->prefix('ordens')->name('ordens.')->group(function () {
         //Listas OS Finalizadas
-        Route::get('/finalizadas',[OsController::class, 'finalizadas']);
+        Route::get('/finalizadas',[OsController::class, 'finalizadas'])->name('finalizadas');
         
         //CRUD OS
         Route::get('/', [OsController::class, 'index'])->name('index');
