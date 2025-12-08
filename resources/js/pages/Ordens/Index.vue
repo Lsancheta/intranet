@@ -80,7 +80,7 @@ function buscar() {
                         <tr>
                             <th class="py-2 px-4 text-left">N°</th>
                             <th class="py-2 px-4 text-left">Solicitação</th>
-                            <th class="py-2 px-4 text-left">Alojamento</th>
+                            <th class="py-2 px-4 text-left">Condomínio</th>
                             <th class="py-2 px-4 text-left">Setor</th>
                             <th class="py-2 px-4 text-left">Prioridade</th>
                             <th class="py-2 px-4 text-left">Status</th>
@@ -152,7 +152,11 @@ function buscar() {
                     <!-- Grid pequeno com informações -->
                     <div class="mt-2 text-sm text-gray-700">
                         <div class="flex justify-between">
-                            <span class="font-semibold">Alojamento:</span>
+                            <span class="font-semibold">Solicitante:</span>
+                            <span>{{ ordem.solicitante?.name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-semibold">Condomínio:</span>
                             <span>{{ ordem.alojamento?.nome }}</span>
                         </div>
 

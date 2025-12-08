@@ -17,23 +17,15 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 
       <!-- Painel de Avisos -->
       <section>
-        <h2 class="text-xl font-semibold text-gray-700 mb-3">📢 Avisos Internos</h2>
+        <h2 class="text-xl font-semibold text-gray-700 mb-3">📢 Avisos Internos 📢</h2>
 
         <div class="bg-white shadow rounded-2xl p-4 divide-y divide-gray-200">
           <div class="py-3">
-            <h3 class="font-semibold text-gray-800">Atualização do Sistema</h3>
+            <h3 class="font-semibold text-gray-800">Fase de Testes da primeira versão do Sistema de gestão interna.</h3>
             <p class="text-gray-600 text-sm">
-              A nova versão da intranet será publicada amanhã às 18h. O sistema poderá ficar indisponível por alguns minutos.
+              A versão de teste do sistema iniciou no dia 02/12/2025 as 17:00 com a equipe de manutenção.
             </p>
-            <span class="text-xs text-gray-400">Postado em: 12/11/2025</span>
-          </div>
-
-          <div class="py-3">
-            <h3 class="font-semibold text-gray-800">Reunião da Equipe Técnica</h3>
-            <p class="text-gray-600 text-sm">
-              Reunião marcada para quinta-feira às 9h no escritório principal. Compareçam pontualmente.
-            </p>
-            <span class="text-xs text-gray-400">Postado em: 11/11/2025</span>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
 
           <div class="py-3">
@@ -41,8 +33,48 @@ import AppLayout from '@/Layouts/AppLayout.vue'
             <p class="text-gray-600 text-sm">
               As Ordens de Serviço agora deverão ser cadastradas diretamente pelo sistema até o final do expediente.
             </p>
-            <span class="text-xs text-gray-400">Postado em: 10/11/2025</span>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
+
+        </div>
+      </section>
+      <!-- Atualizações do SIstema -->
+      <section>
+        <h2 class="text-xl font-semibold text-gray-700 mb-3"> Atualizações do Sistema</h2>
+
+        <div class="bg-white shadow rounded-2xl p-4 divide-y divide-gray-200">
+          <div class="py-3">
+            <h3 class="font-semibold text-gray-800">Correção de Bugs</h3>
+            <p class="text-gray-600 text-sm">
+              Foi corrigido a instabilidade no comentário e finalizar OS.
+            </p>
+            <span class="text-xs text-gray-400">Postado em: 06/12/2025</span>
+          </div>
+
+          <div class="py-3">
+            <h3 class="font-semibold text-gray-800">Atualização do Sistema</h3>
+            <p class="text-gray-600 text-sm">
+              Adicionado a informação dos Condomínios na descrição da OS.
+            </p>
+            <span class="text-xs text-gray-400">Postado em: 03/12/2025</span>
+          </div>
+
+          <div class="py-3">
+            <h3 class="font-semibold text-gray-800">Correção de Bugs</h3>
+            <p class="text-gray-600 text-sm">
+              Foi corrigido a tradução automática do sistema em dispositivos mobile.
+            </p>
+            <span class="text-xs text-gray-400">Postado em: 03/12/2025</span>
+          </div>
+
+          <div class="py-3">
+            <h3 class="font-semibold text-gray-800">Correção de Bugs</h3>
+            <p class="text-gray-600 text-sm">
+              Bug das fotos resolvido, agora as fotos estão sendo salvas e mostradas corretamente..
+            </p>
+            <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
+          </div>
+
         </div>
       </section>
     </div>

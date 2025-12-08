@@ -20,6 +20,9 @@
             <!-- Descrição -->
             <div class="mt-6 border-b pb-4">
                 <div class="text-left text-sl">
+                    <p><strong>Condomínio:</strong> {{ ordem.alojamento.nome }}</p>
+                </div>
+                <div class="text-left text-sl">
                     <p><strong>Área:</strong> {{ ordem.bloco.nome }}</p>
                 </div>
                 <h2 class="font-semibold mb-2 text-lg">Descrição</h2>
@@ -158,7 +161,11 @@
 <script setup>
 import {ref, computed} from "vue";
 import { useForm } from "@inertiajs/vue3";
-import AppLayout from '@/Layouts/AppLayout.vue'
+import AppLayout from '@/Layouts/AppLayout.vue';
+import route from "ziggy-js";
+import { Ziggy } from "@/ziggy"; 
+console.log("ZIGGY:", Ziggy);
+console.log("ROUTE FN:", route);
 
 const modalAberta = ref(false);
 const mostrarTodos = ref(false);
@@ -173,7 +180,7 @@ const form = useForm({
 });
 
 function enviar() {
-    form.post(route("ordens.comentario", props.ordem.id), {
+    form.post(route("ordens.comentario", props.ordem.id, undefined, Ziggy), {
         onSuccess: () => {
             form.reset();
         }
@@ -184,16 +191,7 @@ const formFoto = useForm({
 })
 
 //function enviarFoto(){
-//
-//    const fd = new FormData();
-//    fd.append("foto", formFoto.foto);
-//    formFoto.post(route("ordens.foto",props.ordem.id),{
-//        forceFormData: true,
-//        preserveScroll: true,
-//        onSuccess:()=>formFoto.reset(),
-//        onError:(e)=>console.log("ERRO MOBILE:", e)
-//    });
-//}
+
 async function enviarFoto() {
     if (!formFoto.foto) {
         console.log("Nenhuma foto selecionada");
@@ -211,7 +209,7 @@ async function enviarFoto() {
         formFoto.foto = compressed;
 
         // 👉 3. Enviar para o backend
-        formFoto.post(route("ordens.foto", props.ordem.id), {
+        formFoto.post(route("ordens.foto", props.ordem.id,undefined, Ziggy), {
             forceFormData: true,
             preserveScroll: true,
             onSuccess: () => formFoto.reset(),
@@ -282,7 +280,7 @@ const formFinalizar = useForm({
 
 function finalizarOS(){
     formFinalizar.post(
-        route("ordens.finalizar", props.ordem.id),{
+        route("ordens.finalizar", props.ordem.id, undefined, Ziggy),{
             onSuccess: () => {
                 modalAberta.value = false;
                 formFinalizar.reset();

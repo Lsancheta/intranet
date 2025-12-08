@@ -1,6 +1,8 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
+import route from "ziggy-js";
+import { Ziggy } from "@/ziggy";
 
 const emit = defineEmits(["saved"]);
 
@@ -42,7 +44,7 @@ function selecionarBloco() {
 }
 
 function submit() {
-    form.post("/ordens", {
+    form.post(route("ordens.store", undefined, undefined, Ziggy), {
         onSuccess: () => emit("saved"),
     });
 }
