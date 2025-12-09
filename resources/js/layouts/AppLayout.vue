@@ -19,7 +19,7 @@ function toggleMobile() {
       
       <!-- Título -->
       <div class="font-semibold text-base">
-        PANNELA DE PEDRA v0.1
+        PANNELA DE PEDRA v0.3
       </div>
 
       <!-- Parte direita -->
