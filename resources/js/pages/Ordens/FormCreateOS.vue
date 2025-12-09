@@ -125,6 +125,17 @@ function compressImage(file, quality = 0.6, maxWidth = 1280) {
     });
 }
 
+async function compressedAndAssign(e){
+    const files = Array.from(e.target.files);
+    const compressed=[];
+
+    for(const file of files){
+        const comp = await compressImage(file, 0.6, 1280);
+        compressed.push(comp)
+    }
+    form.fotos = compressed;
+}
+
 </script>
 <template>
     <!-- Wrapper responsivo -->
@@ -215,9 +226,10 @@ function compressImage(file, quality = 0.6, maxWidth = 1280) {
                 <input
                     type="file"
                     accept="image/*"
+                    capture="environment"
                     multiple
                     name="fotos[]"
-                    @change="(e) => form.fotos = Array.from(e.target.files)"
+                    @change="compressedAndAssign"
                     class="w-full border rounded-lg p-2"
                 >
             </div>
