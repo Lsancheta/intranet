@@ -63,8 +63,11 @@ import route from 'ziggy-js';
 import { Ziggy } from './ziggy';
 import { ZiggyVue } from 'ziggy-js/dist/vue.m';
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_URL ?? window.location.origin;
-axios.defaults.withCredentials = true;
+console.log("VITE_APP_URL:", import.meta.env.VITE_APP_URL);
+
+axios.defaults.baseURL = import.meta.env.VITE_APP_URL || window.location.origin;
+console.log("Axios BASE URL carregado:", axios.defaults.baseURL);
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 declare global{
