@@ -25,6 +25,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
             <p class="text-gray-600 text-sm">
               A versão de teste do sistema iniciou no dia 02/12/2025 as 17:00 com a equipe de manutenção.
             </p>
+
             <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
 
@@ -35,6 +36,9 @@ import AppLayout from '@/Layouts/AppLayout.vue'
             </p>
             <span class="text-xs text-gray-400">Postado em: 02/12/2025</span>
           </div>
+
+          </div>
+
 
         </div>
       </section>
