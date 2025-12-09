@@ -88,8 +88,6 @@ class OsController extends Controller
     }
 
     public function store(Request $request){
-        //dd($ordens);
-        //dd($request->all());
         $data = $request->validate([
             'titulo' =>'required|string|max:255',
             'descricao'=>'required|string',
@@ -97,24 +95,32 @@ class OsController extends Controller
             'alojamento_id'=>'required|exists:alojamentos,id',
             'bloco_id'=>'required|exists:blocos,id',
             'quarto_id'=>'nullable|exists:quartos,id',
-            'fotos.*'=> 'image|mimes:jpg,jpeg,png|max:2048'
+            'fotos.*'=> 'image|mimes:jpg,jpeg,png|max:10048'
         ]);
-        OrdemServico::create(array_merge($data,[
-            'solicitante_id'=> auth()->id(),
-            'status_id'=>1, //Isso irá forçar a criação da OS em aberta de acordo com o BD.
+
+        // 1. Criar a OS e guardar na variável $ordem
+        $ordem = OrdemServico::create(array_merge($data, [
+            'solicitante_id' => auth()->id(),
+            'status_id' => 1,
         ]));
-        //salvar imagem
-        if ($request-> hasFile('fotos')){
-            foreach($request->file('fotos') as $foto){
+
+        // 2. Salvar as fotos
+        if ($request->hasFile('fotos')) {
+            foreach ($request->file('fotos') as $foto) {
                 $path = $foto->store('os_fotos', 'public');
+
                 \App\Models\OsFoto::create([
-                    'ordem_servico_id'=> $ordem->id,
-                    'caminho'=>$path
+                    'ordem_servico_id' => $ordem->id,
+                    'caminho' => $path
                 ]);
             }
         }
-        return redirect()->route('ordens.index')->with('Success', 'OS Criada com sucesso!');
+
+        return redirect()
+            ->route('ordens.index')
+            ->with('Success', 'OS Criada com sucesso!');
     }
+
 
     public function show($id){
         $alojamentos = \App\Models\Alojamento::with('blocos.quartos')->get();
