@@ -19,7 +19,7 @@ function toggleMobile() {
       
       <!-- Título -->
       <div class="font-semibold text-base">
-        PANNELA DE PEDRA v0.1
+        PANNELA DE PEDRA v0.3
       </div>
 
       <!-- Parte direita -->
@@ -47,7 +47,7 @@ function toggleMobile() {
       <ul class="flex space-x-6 font-semibold">
         <li><Link href="/" class="hover:text-gray-200 px-2">INICIAL</Link></li>
         <li><Link href="/ordens" class="hover:text-gray-200 px-2">ORDEM DE SERVIÇO</Link></li>
-        <li><Link href="#" class="hover:text-gray-200 px-2">ESTOQUE</Link></li>
+        <li><Link href="/estoque" class="hover:text-gray-200 px-2">ESTOQUE</Link></li>
         <li><Link href="#" class="hover:text-gray-200 px-2">COZINHA</Link></li>
         <li><Link href="/admin/" class="hover:text-gray-200 px-2">ADMINISTRAÇÃO</Link></li>
       </ul>

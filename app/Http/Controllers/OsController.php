@@ -95,7 +95,7 @@ class OsController extends Controller
             'alojamento_id'=>'required|exists:alojamentos,id',
             'bloco_id'=>'required|exists:blocos,id',
             'quarto_id'=>'nullable|exists:quartos,id',
-            'fotos.*'=> 'image|mimes:jpg,jpeg,png|max:10048'
+            'fotos.*'=> 'image|mimes:jpg,jpeg,png|max:50048'
         ]);
 
         // 1. Criar a OS e guardar na variável $ordem
