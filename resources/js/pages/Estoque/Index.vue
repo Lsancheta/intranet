@@ -5,25 +5,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import { Ziggy } from "@/ziggy";
 
-// Simulações de dados até integrar com backend
-const baixoEstoque = ref([
-  { id: 1, nome: 'Produto A', quantidade: 3 },
-  { id: 2, nome: 'Produto B', quantidade: 1 }
-]);
+const props = defineProps({
+  produtos_baixo_estoque: Array,
+  top_consumidos: Array,
+  previsao_reposicao: Array,
+  pendentes: Array
+})
 
-const maisConsumidos = ref([
-  { id: 1, nome: 'Produto A', usos: 120 },
-  { id: 2, nome: 'Produto C', usos: 95 }
-]);
-
-const proximasCompras = ref([
-  { id: 1, nome: 'Produto D', data: '2025-12-20' }
-]);
-
-const transferenciasPendentes = ref([
-  { id: 10, produto: 'Produto A', quantidade: 15 },
-  { id: 11, produto: 'Produto C', quantidade: 8 }
-]);
 </script>
 
 <style scoped>
@@ -51,13 +39,14 @@ const transferenciasPendentes = ref([
           >
               Estoque
           </Link>
-          <!-- Depósito -->
+          <!-- Depósito 
           <Link
             href="/estoque/depositos/itens"
             class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
           >
               Depósito
           </Link>
+          -->
 
             <!-- Transferências -->
             <Link
@@ -81,7 +70,7 @@ const transferenciasPendentes = ref([
           <h2 class="text-lg font-semibold mb-2">Baixo Estoque</h2>
           <ul>
             <li v-for="item in baixoEstoque" :key="item.id">
-              {{ item.nome }} — {{ item.quantidade }} un
+              {{ item.produto.nome }} — {{ item.quantidade }} un
             </li>
           </ul>
         </div>
@@ -90,7 +79,7 @@ const transferenciasPendentes = ref([
           <h2 class="text-lg font-semibold mb-2">Produtos Mais Consumidos</h2>
           <ul>
             <li v-for="item in maisConsumidos" :key="item.id">
-              {{ item.nome }} — {{ item.usos }} usos
+              {{ item.produto.nome }} — {{ item.usos }} usos
             </li>
           </ul>
         </div>
@@ -99,7 +88,7 @@ const transferenciasPendentes = ref([
           <h2 class="text-lg font-semibold mb-2">Próximas Compras</h2>
           <ul>
             <li v-for="item in proximasCompras" :key="item.id">
-              {{ item.nome }} — sugerir compra em: {{ item.data }}
+              {{ item.produto.nome }} — sugerir compra em: {{ item.data }}
             </li>
           </ul>
         </div>
@@ -111,7 +100,7 @@ const transferenciasPendentes = ref([
         <h2 class="text-lg font-semibold mb-4">Transferências Pendentes</h2>
         <ul>
           <li v-for="tr in transferenciasPendentes" :key="tr.id">
-            ID: {{ tr.id }} — {{ tr.produto }} ({{ tr.quantidade }} un)
+            ID: {{ tr.id }} — {{ tr.produto.nome }} ({{ tr.produto.quantidade }} un)
           </li>
         </ul>
       </div>

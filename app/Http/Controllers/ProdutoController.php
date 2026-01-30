@@ -8,9 +8,6 @@ use Inertia\Inertia;
 
 class ProdutoController extends Controller
 {
-    /**
-     * Lista todos os produtos.
-     */
     public function index()
     {
         $produtos = Produto::orderBy('nome')->get();
@@ -20,71 +17,77 @@ class ProdutoController extends Controller
         ]);
     }
 
-    /**
-     * Exibe o formulário de criação.
-     */
     public function create()
     {
         return Inertia::render('Produtos/Create');
     }
 
-    /**
-     * Salva um novo produto.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
             'unidade' => 'required|string|max:20',
-            'peso_unitario' => 'nullable|numeric|min:0',
+            'preco_custo' => 'required|numeric|min:0',
+            'estoque_minimo' => 'required|integer|min:0',
+            'ativo' => 'boolean'
         ]);
 
-        Produto::create($request->only('nome', 'unidade', 'peso_unitario'));
+        Produto::create([
+            'nome' => $request->nome,
+            'unidade' => $request->unidade,
+            'preco_custo' => $request->preco_custo,
+            'estoque_minimo' => $request->estoque_minimo,
+            'ativo' => $request->ativo ?? true,
+        ]);
 
-        return redirect()->route('produtos.index')
+        return redirect()->route('estoque.produtos.index')
             ->with('success', 'Produto criado com sucesso!');
     }
 
-    /**
-     * Exibe o formulário de edição.
-     */
-    public function edit(Produto $produto)
+    public function edit($id)
     {
+        $produto = Produto::findOrFail($id);
+
         return Inertia::render('Produtos/Edit', [
             'produto' => $produto
         ]);
     }
 
-    /**
-     * Atualiza um produto existente.
-     */
-    public function update(Request $request, Produto $produto)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
             'unidade' => 'required|string|max:20',
-            'peso_unitario' => 'nullable|numeric|min:0',
+            'preco_custo' => 'required|numeric|min:0',
+            'estoque_minimo' => 'required|integer|min:0',
+            'ativo' => 'boolean'
         ]);
 
-        $produto->update($request->only('nome', 'unidade', 'peso_unitario'));
+        $produto = Produto::findOrFail($id);
 
-        return redirect()->route('produtos.index')
+        $produto->update([
+            'nome' => $request->nome,
+            'unidade' => $request->unidade,
+            'preco_custo' => $request->preco_custo,
+            'estoque_minimo' => $request->estoque_minimo,
+            'ativo' => $request->ativo,
+        ]);
+
+        return redirect()->route('estoque.produtos.index')
             ->with('success', 'Produto atualizado com sucesso!');
     }
 
-    /**
-     * Remove um produto.
-     */
-    public function destroy(Produto $produto)
+    public function destroy($id)
     {
-        // Validação: impedir exclusão se já houve movimentações
-        if ($produto->transferencias()->exists()) {
+        $produto = Produto::findOrFail($id);
+
+        if ($produto->itensTransferencias()->exists()) {
             return back()->with('error', 'Não é possível excluir um produto com movimentações registradas.');
         }
 
         $produto->delete();
 
-        return redirect()->route('produtos.index')
+        return redirect()->route('estoque.produtos.index')
             ->with('success', 'Produto excluído com sucesso!');
     }
 }

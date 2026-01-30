@@ -8,11 +8,13 @@ class Produto extends Model
 {
     protected $fillable = [
         'nome',
-        'categoria',
-        'descricao'
+        'unidade',
+        'preco_custo',
+        'estoque_minimo',
+        'ativo',
     ];
 
-    public function transferencias(){
-        return $this->hasMany(Transferencia::class);
+    public function itensTransferencias(){
+        return $this->hasMany(TransferenciaItem::class, 'produto_id');
     }
 }

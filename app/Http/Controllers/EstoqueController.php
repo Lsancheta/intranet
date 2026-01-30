@@ -23,14 +23,16 @@ class EstoqueController extends Controller
             'total_deposito' => DepositoItem::sum('quantidade'),
             'total_estoque' => EstoqueItem::sum('quantidade'),
 
-            'produtos_baixo_estoque' => EstoqueItem::with('produto', 'local')
-                ->whereColumn('quantidade', '<', 'estoque_minimo')
+            'produtos_baixo_estoque' => EstoqueItem::with('produto')
+                ->join('produtos','produtos.id', '=','estoque_items.produto_id')
+                ->whereColumn('estoque_items.quantidade','<','produtos.estoque_minimo')
                 ->orderBy('quantidade', 'asc')
                 ->take(10)
-                ->get(),
+                ->get(['estoque_items']),
 
             'top_consumidos' => TransferenciaItem::selectRaw('produto_id, SUM(quantidade) as total')
-                ->where('tipo_id', 2) // saída/consumo
+                ->join('transferencias', 'transferencias.id', '=', 'transferencia_itens.transferencia_id')    
+                ->where('transferencias.tipo_id', 2) // saída/consumo
                 ->groupBy('produto_id')
                 ->orderByDesc('total')
                 ->take(5)
@@ -39,9 +41,12 @@ class EstoqueController extends Controller
 
             'previsao_reposicao' => $this->calcularReposicao(),
 
-            'pendentes' => TransferenciaItem::where('status', 'pendente')
-                ->with(['itens.produto', 'destino', 'usuario'])
+            'pendentes' => TransferenciaItem::where('status_id', 1)
+                ->with(['itens.produto', 'localDestino', 'usuario'])
                 ->get(),
+            
+            //previsao de falta
+            'previsao_reposicao' => $this->calcularReposicao(),
         ]);
     }
 
@@ -57,7 +62,7 @@ class EstoqueController extends Controller
         // Exemplo básico:
         // Pega consumo dos últimos 30 dias.
         $consumos = TransferenciaItem::selectRaw('produto_id, SUM(quantidade) as total')
-            ->where('tipo_id', 2)
+            ->where('id', 2)
             ->where('created_at', '>=', now()->subDays(30))
             ->groupBy('produto_id')
             ->get();

@@ -2,7 +2,8 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { Link } from "@inertiajs/vue3";
-import { Ziggy } from "@/ziggy";
+//import route from "ziggy-js";
+//import { Ziggy } from "@/ziggy";
 import {ref, computed} from 'vue';
 
 
@@ -33,7 +34,9 @@ const locaisFiltrados = computed(() =>{
 const produtoSelecionado = ref(null)
 
 function submit() {
-  form.post(route('transferencias.store'))
+  form.post(route('transferencias.store', undefined, Ziggy), {
+        onSuccess: () => emit("saved"),
+    });
 }
 
 function precisaOrigem() {

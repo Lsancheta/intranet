@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue'
 import { Link } from '@inertiajs/vue3'
-import { Ziggy } from "@/ziggy";
+//import { Ziggy } from "@/ziggy";
 
 defineProps({
   transferencias: Object,
@@ -106,7 +106,7 @@ defineProps({
               </td>
 
               <td class="px-4 py-3 text-right">
-                {{ tr.quantidade }}
+                {{ item.quantidade }}
               </td>
 
               <td class="px-4 py-3">

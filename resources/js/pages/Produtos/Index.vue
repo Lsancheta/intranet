@@ -23,7 +23,7 @@ const produtosFiltrados = computed(() => {
 function excluir(id) {
     if (!confirm("Tem certeza que deseja excluir este produto?")) return;
 
-    router.delete(route('estoque.produtos.destroy', id));
+    router.delete(`/estoque/produtos/${id}`);
 }
 </script>
 
@@ -31,25 +31,43 @@ function excluir(id) {
     <AppLayout>
         <!-- HEADER LIMPO -->
         <template #header>
-            <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-semibold">Dashboard Estoque</h1>
-
-                <div class="flex gap-3">
-                    <Link
-                        href="/ordens/finalizadas"
-                        class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
-                    >
-                        OS Finalizadas
-                    </Link>
-
-                    <button
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                        @click="showCreate = true"
-                    >
-                        Nova OS
-                    </button>
-                </div>
+      <div class="flex justify-between items-center">
+            
+        <h1 class="text-2xl font-semibold">Dashboard Estoque</h1>
+        <div class="flex gap-3">
+          <!-- Produtos -->
+          <Link
+              href="/estoque/produtos"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          >
+                Produtos
+          </Link>
+          <!-- Itens do Estoque -->
+          <Link 
+            href="/estoque/estoque/itens"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+              Estoque
+          </Link>
+          <!-- Depósito 
+          <Link
+            href="/estoque/depositos/itens"
+            class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+          >
+              Depósito
+          </Link>
+          -->
+            <!-- Transferências -->
+            <Link
+                
+                href="/transferencias"
+                class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            >
+                Transferências
+            </Link>
             </div>
+
+        </div>
         </template>
         <Head title="Produtos" />
 
@@ -60,10 +78,10 @@ function excluir(id) {
                 <h1 class="text-2xl font-bold">Produtos</h1>
 
                 <Link
-                    :href="route('estoque.produtos.create')"
+                    href="/estoque/produtos/criar"
                     class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                    + Novo Produto
+                    Novo Produto
                 </Link>
             </div>
 
@@ -104,7 +122,7 @@ function excluir(id) {
 
                                     <!-- Editar -->
                                     <Link
-                                        :href="route('estoque.produtos.edit', produto.id)"
+                                        :href="`/estoque/produtos/${produto.id}/editar`"
                                         class="px-3 py-1 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600"
                                     >
                                         Editar
