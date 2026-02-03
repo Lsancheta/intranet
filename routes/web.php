@@ -13,6 +13,7 @@ use App\Http\Controllers\DepositoItemController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TransferenciaController;
 use App\Http\Controllers\EstoqueController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -51,11 +52,9 @@ Route::middleware(['auth'])->group(function(){
     | Página inicial
     |--------------------------------------------------------------------------
     */
-    Route::get('/', function () {
-        return Inertia::render('Welcome', [
-            'canRegister' => Features::enabled(Features::registration()),
-        ]);
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('home');
     /*
     |--------------------------------------------------------------------------
     | Ordens de Serviço

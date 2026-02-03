@@ -19,14 +19,14 @@ function toggleMobile() {
       
       <!-- Título -->
       <div class="font-semibold text-base">
-        PANNELA DE PEDRA v0.3
+        PANNELA DE PEDRA v0.5
       </div>
 
       <!-- Parte direita -->
       <div class="hidden md:flex items-center space-x-4">
         <span class="font-medium">{{ $page.props.auth.user.name }}</span>
         <Link href="/logout" method="post" as="button" class="hover:underline">Sair</Link>
-        <img src="https://via.placeholder.com/40" class="rounded-full ml-2 border border-white/30" />
+       <!-- <img src="https://via.placeholder.com/40" class="rounded-full ml-2 border border-white/30" /> -->
       </div>
 
       <!-- Botão mobile -->
