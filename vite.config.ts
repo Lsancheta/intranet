@@ -8,8 +8,7 @@ export default defineConfig({
 
     server:{
         https: false,
-        host: '127.0.0.1',
-        port:5173, // tirar para produção
+        host: true,
         strictPort: true,
     },
     plugins: [
