@@ -118,7 +118,12 @@
                     :key="foto.id"
                     class="border rounded-lg overflow-hidden shadow-sm hover:shadow-lg"
                 >
-                    <img :src="`/storage/${foto.caminho}`" class="w-full h-50 object-cover transition-transform duration-300 hover:scale-130 cursor-pointer">
+                    <img :src="`/storage/${foto.caminho}`"
+                         @click="toggleFullScreen($event.target)"
+                            class="w-full h-50 object-cover transition-transform duration-200 hover:scale-160 cursor-pointer"
+                    >
+                    <!-- explodir imagem para tela cheia -->
+                    
                 </div>
             </div>
             </div>
@@ -164,8 +169,8 @@ import { useForm } from "@inertiajs/vue3";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import route from "ziggy-js";
 import { Ziggy } from "@/ziggy"; 
-console.log("ZIGGY:", Ziggy);
-console.log("ROUTE FN:", route);
+//console.log("ZIGGY:", Ziggy);
+//console.log("ROUTE FN:", route);
 
 const modalAberta = ref(false);
 const mostrarTodos = ref(false);
@@ -173,6 +178,30 @@ const mostrarTodos = ref(false);
 const props = defineProps({
     ordem: Object
 });
+
+
+function toggleFullScreen(element) {
+    if (!element) {
+        console.log("Elemento fullscreen não encontrado");
+        return;
+    }
+
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+        return;
+    }
+
+    const request =
+        element.requestFullscreen ||
+        element.webkitRequestFullscreen ||
+        element.msRequestFullscreen;
+
+    if (request) {
+        request.call(element);
+    } else {
+        console.log("Fullscreen API não suportada neste navegador");
+    }
+}
 
 
 const form = useForm({

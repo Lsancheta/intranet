@@ -19,14 +19,14 @@ function toggleMobile() {
       
       <!-- Título -->
       <div class="font-semibold text-base">
-        PANNELA DE PEDRA v0.3
+        PANNELA DE PEDRA v0.5
       </div>
 
       <!-- Parte direita -->
       <div class="hidden md:flex items-center space-x-4">
         <span class="font-medium">{{ $page.props.auth.user.name }}</span>
         <Link href="/logout" method="post" as="button" class="hover:underline">Sair</Link>
-        <img src="https://via.placeholder.com/40" class="rounded-full ml-2 border border-white/30" />
+       <!-- <img src="https://via.placeholder.com/40" class="rounded-full ml-2 border border-white/30" /> -->
       </div>
 
       <!-- Botão mobile -->
@@ -47,7 +47,7 @@ function toggleMobile() {
       <ul class="flex space-x-6 font-semibold">
         <li><Link href="/" class="hover:text-gray-200 px-2">INICIAL</Link></li>
         <li><Link href="/ordens" class="hover:text-gray-200 px-2">ORDEM DE SERVIÇO</Link></li>
-        <li><Link href="#" class="hover:text-gray-200 px-2">ESTOQUE</Link></li>
+        <li><Link href="/estoque" class="hover:text-gray-200 px-2">ESTOQUE</Link></li>
         <li><Link href="#" class="hover:text-gray-200 px-2">COZINHA</Link></li>
         <li><Link href="/admin/" class="hover:text-gray-200 px-2">ADMINISTRAÇÃO</Link></li>
       </ul>

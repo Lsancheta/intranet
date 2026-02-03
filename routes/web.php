@@ -6,9 +6,14 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OsController;
-use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\EstoqueItemController;
+use App\Http\Controllers\DepositoItemController;
+use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\TransferenciaController;
+use App\Http\Controllers\EstoqueController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -47,11 +52,9 @@ Route::middleware(['auth'])->group(function(){
     | Página inicial
     |--------------------------------------------------------------------------
     */
-    Route::get('/', function () {
-        return Inertia::render('Welcome', [
-            'canRegister' => Features::enabled(Features::registration()),
-        ]);
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('home');
     /*
     |--------------------------------------------------------------------------
     | Ordens de Serviço
@@ -95,9 +98,55 @@ Route::middleware(['auth'])->group(function(){
     | Estoque
     |--------------------------------------------------------------------------
     */
-    //Route::middleware(['auth','setor:1,2,3,4'])->prefix('estoque')->name('estoque.')->group(function () {
-    //    Route::get('/', [EstoqueController::class, 'index'])->name('index');
-    //});
+    Route::middleware(['auth','setor:1,3,4'])
+        ->prefix('estoque')
+        ->name('estoque.')
+        ->group(function () {
+            Route::get('/', [EstoqueController::class, 'index'])->name('index');
+            
+            /*
+            |--------------------------------------------------------------------------
+            | Produtos
+            | /estoque/produtos
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('produtos')->name('produtos.')->group(function(){
+                Route::get('/',[ProdutoController::class, 'index'])->name('index');
+                Route::get('/criar',[ProdutoController::class, 'create'])->name('create');
+                Route::post('/',[ProdutoController::class, 'store'])->name('store');
+                Route::get('/{id}/editar',[ProdutoController::class, 'edit'])->name('edit');
+                Route::put('/{id}',[ProdutoController::class, 'update'])->name('update');
+                Route::delete('/{id}',[ProdutoController::class, 'destroy'])->name('destroy');
+            });
+            /*
+            |--------------------------------------------------------------------------
+            | Estoque da Cozinha ou Estoque Seco
+            | /estoque/itens
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('itens')->name('itens.')->group(function() {
+                Route::get('/',[EstoqueItemController::class, 'index'])->name('index');
+                Route::get('/criar',[EstoqueItemController::class, 'create'])->name('create');
+                Route::post('/',[EstoqueItemController::class, 'store'])->name('store');
+                Route::get('/{id}/editar',[EstoqueItemController::class, 'edit'])->name('edit');
+                Route::put('/{id}',[EstoqueItemController::class, 'update'])->name('update');
+                Route::delete('/{id}',[EstoqueItemController::class, 'destroy'])->name('destroy');
+            });
+            /*
+            |--------------------------------------------------------------------------
+            | Depósito
+            | /estoque/depositos/itens
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('depositos/itens')->name('depositos.itens.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\DepositoItemController::class, 'index'])->name('index');
+                Route::get('/criar', [\App\Http\Controllers\DepositoItemController::class, 'create'])->name('create');
+                Route::post('/', [\App\Http\Controllers\DepositoItemController::class, 'store'])->name('store');
+                Route::get('/{id}/editar', [\App\Http\Controllers\DepositoItemController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [\App\Http\Controllers\DepositoItemController::class, 'update'])->name('update');
+                Route::delete('/{id}', [\App\Http\Controllers\DepositoItemController::class, 'destroy'])->name('destroy');
+            });
+    });
 
     
     
@@ -118,4 +167,23 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
     });
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transferencias
+    | aqui é onde acontecerá as transferencias entre deposito e estoque e condominios
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['auth', 'setor:1,3,4'])->prefix('transferencias')->name('transferencias.')->group(function () {
+
+        Route::get('/', [TransferenciaController::class, 'index'])->name('index');
+        Route::get('/criar', [TransferenciaController::class, 'create'])->name('create');
+        Route::post('/', [TransferenciaController::class, 'store'])->name('store');
+
+        // Caso futuramente haja edição:
+        // Route::get('/{id}/edit', [TransferenciaController::class, 'edit'])->name('edit');
+        // Route::put('/{id}', [TransferenciaController::class, 'update'])->name('update');
+
+    });
+
 });
+
