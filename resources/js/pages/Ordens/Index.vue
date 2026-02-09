@@ -1,7 +1,7 @@
 <script setup>
 import { Link, router } from "@inertiajs/vue3";
-import AppLayout from "@/Layouts/AppLayout.vue";
-import Modal from "@/Components/Modal.vue";
+import AppLayout from "@/layouts/AppLayout.vue";
+import Modal from "@/components/Modal.vue";
 import FormCreateOS from "./FormCreateOS.vue";
 import { ref } from "vue";
 
@@ -44,6 +44,11 @@ function buscar() {
         replace: true,
     });
 }
+
+function truncate(text, limit){
+    return text.length > limit ? text.slice(0, limit) + '...' : text;
+}
+
 </script>
 
 <template>
@@ -139,11 +144,11 @@ function buscar() {
                     class="block bg-white shadow rounded-lg p-4 border active:bg-gray-50"
                 >
                     <!-- Cabeçalho -->
-                    <div class="flex justify-between">
-                        <h2 class="font-semibold text-lg">{{ ordem.titulo }}</h2>
+                    <div class="flex justify-between items-start gap-2">
+                        <h2 class="font-semibold text-lg break-words">{{ truncate(ordem.titulo, 20) }}</h2>
 
                         <span
-                            :class="`${statusColor(ordem.status_id)} px-2 py-1 rounded-full text-xs`"
+                            :class="`${statusColor(ordem.status_id)} px-2 py-1 rounded-full text-xs withespace-nowrap`"
                         >
                             {{ ordem.status.nome }}
                         </span>
@@ -196,79 +201,3 @@ function buscar() {
     </AppLayout>
 </template>
 
-
-<!--
-=====================
-TABLE ANTERIOR
-====================
-<table class="w-full bg-white text-black shadow rounded-lg overflow-hidden">
-                <thead class="bg-gray-300">
-                    <tr>
-                        <th class="py-2 px-4 text-left">N°</th>
-                        <th class="py-2 px-4 text-left">Solicitação</th>
-                        <th class="py-2 px-4 text-left">Alojamento</th>
-                        <th class="py-2 px-4 text-left">Setor</th>
-                        <th class="py-2 px-4 text-left">Prioridade</th>
-                        <th class="py-2 px-4 text-left">Status</th>
-                        <th class="py-2 px-4 text-left">Solicitante</th>
-                        <th class="py-2 px-4 text-left">Data</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr
-                        v-for="ordem in props.ordens"
-                        :key="ordem.id"
-                        class="border-b hover:bg-gray-50 cursor-pointer"
-                    >
-                        <td class="py-2 px-4">
-                            <Link
-                                :href="`/ordens/${ordem.id}`"
-                                class="text-blue-600 hover:underline"
-                            >
-                                {{ ordem.id }}
-                            </Link>
-                        </td>
-
-                        <td class="py-2 px-4">{{ ordem.titulo }}</td>
-
-                        <td class="py-2 px-4">
-                            {{ ordem.alojamento?.nome }}
-                        </td>
-
-                        <td class="py-2 px-4">
-                            {{ ordem.bloco?.nome }}
-                        </td>
-
-                        <!-- PRIORIDADE 
-                        <td class="py-2 px-4">
-                            <span
-                                class="px-3 py-1 rounded text-white text-sm"
-                                :style="{ backgroundColor: ordem.prioridade?.cor ?? '#777' }"
-                            >
-                                {{ ordem.prioridade?.nome ?? "Sem prioridade" }}
-                            </span>
-                        </td>
-
-                        <!-- STATUS 
-                        <td class="py-2 px-4">
-                            <span
-                                :class="`${statusColor(
-                                    ordem.status_id
-                                )} px-3 py-1 rounded-full text-sm font-semibold`"
-                            >
-                                {{ ordem.status.nome }}
-                            </span>
-                        </td>
-
-                        <td class="py-2 px-4">
-                            {{ ordem.solicitante?.name ?? "---" }}
-                        </td>
-
-                        <td class="py-2 px-4">
-                            {{ ordem.created_at }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
--->

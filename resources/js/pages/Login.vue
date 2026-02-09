@@ -26,9 +26,9 @@ function submit() {
             v-model="form.name"
             class="border rounded w-full px-3 py-2"
           />
-          <!--<div v-if="form.errors.email" class="text-red-600 text-sm">
-            {{ form.errors.email }}
-          </div>-->
+          <div v-if="form.errors.name" class="text-red-600 text-sm">
+            {{ form.errors.name }}
+          </div>
         </div>
 
         <div class="mb-4">

@@ -28,4 +28,5 @@ yarn-error.log
 /.zed
 databse.sqlite
 /resources/js/ziggy.js
+/resources/ziggy.js
 vite.config.ts

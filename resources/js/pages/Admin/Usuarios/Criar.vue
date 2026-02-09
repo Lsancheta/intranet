@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Ziggy } from "@/ziggy";
 
 
 const props = defineProps({
@@ -16,7 +17,9 @@ const form = useForm({
 })
 
 function submit() {
-  form.post(route('usuarios.store'))
+  form.post(route('usuarios.store', undefined, undefined, Ziggy),{
+    onSuccess: () => emit("saved"),
+  })
 }
 </script>
 

@@ -1,13 +1,14 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Modal from "@/Components/Modal.vue";
+import { Link, router } from "@inertiajs/vue3";
+//import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
   totalOs: {type: Number, default: 0},
   osResolvidas: {type: Number, default: 0},
   osPendentes: {type: Number, default: 0},
   osAbertas: {type: Number, default: 0},
-  osEmAndamento: {type: Number, default: 0},
+  osEmAndamento: {type: Number, default: 0}
 })
 
 </script>
@@ -81,36 +82,38 @@ const props = defineProps({
 
         <!-- Painel 2 - Ordens de Serviço -->
         <div class="bg-white shadow rounded-2xl p-6">
-          <h2 class="text-lg font-semibold text-gray-700 mb-4">
-            🛠 Ordens de Serviço
-          </h2>
+          <Link href="/ordens">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">
+              🛠 Ordens de Serviço
+            </h2>
 
-          <div class="grid grid-cols-2 gap-4 text-center">
-            <div>
-              <p class="text-3xl font-bold text-gray-800">{{ totalOs }}</p>
-              <p class="text-sm text-gray-500">Total </p>
-            </div>
+            <div class="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <p class="text-3xl font-bold text-gray-800">{{ totalOs }}</p>
+                <p class="text-sm text-gray-500">Total </p>
+              </div>
 
-            <div>
-              <p class="text-3xl font-bold text-blue-800">{{ osResolvidas }}</p>
-              <p class="text-sm text-gray-500">Resolvidas</p>
-            </div>
+              <div>
+                <p class="text-3xl font-bold text-blue-800">{{ osResolvidas }}</p>
+                <p class="text-sm text-gray-500">Resolvidas</p>
+              </div>
 
-            <div>
-              <p class="text-3xl font-bold text-green-600">{{ osAbertas }}</p>
-              <p class="text-sm text-gray-500">Abertas</p>
-            </div>
+              <div>
+                <p class="text-3xl font-bold text-green-600">{{ osAbertas }}</p>
+                <p class="text-sm text-gray-500">Abertas</p>
+              </div>
 
-            <div>
-              <p class="text-3xl font-bold text-yellow-500">{{ osEmAndamento }}</p>
-              <p class="text-sm text-gray-500">Em andamento</p>
-            </div>
+              <div>
+                <p class="text-3xl font-bold text-yellow-500">{{ osEmAndamento }}</p>
+                <p class="text-sm text-gray-500">Em andamento</p>
+              </div>
 
-            <div>
-              <p class="text-3xl font-bold text-red-500">{{ osPendentes }}</p>
-              <p class="text-sm text-gray-500">Pendentes</p>
+              <div>
+                <p class="text-3xl font-bold text-red-500">{{ osPendentes }}</p>
+                <p class="text-sm text-gray-500">Pendentes</p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         <!-- Painel 4 - Reservado -->

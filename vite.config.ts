@@ -5,29 +5,21 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-
-    server:{
-        https: false,
-        host: true,
-        strictPort: true,
-    },
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],
-            ssr: 'resources/js/ssr.ts',
             refresh: true,
         }),
+        vue(),
         tailwindcss(),
         wayfinder({
-            formVariants: true,
-        }),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
+            output: 'resources/js/wayfinder.js',
+            include: ['app/Http/Controllers/**/*.php'],
         }),
     ],
+    server: {
+        host: 'localhost',
+        port: 5173,
+        strictPort: true,
+    },
 });
