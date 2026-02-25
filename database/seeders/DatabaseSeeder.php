@@ -15,8 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            LocalSeeder::class,
-            TiposTransferenciaSeeder::class,
+            //LocalSeeder::class,
+            //TiposTransferenciaSeeder::class,
+            //ProdutosSeeder::class,
+            TipoProdutoSeeder::class,
+            //produtoTransferencia::class,
         ]);
     }
 }

@@ -1,11 +1,38 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
+import {  reactive, watch } from 'vue'
 //import { Ziggy } from "@/ziggy";
 
-defineProps({
+const props = defineProps({
   transferencias: Object,
+  filters: Object
 })
+
+const filtros = reactive({
+  produto: props.filters?.produto || '',
+  tipo_id: props.filters?.tipo_id || '',
+  data_inicio: props.filters?.data_inicio || '',
+  data_fim: props.filters?.data_fim || '',
+})
+
+let timeout = null
+
+watch(
+  filtros,
+  (value) => {
+    clearTimeout(timeout)
+
+    timeout = setTimeout(() => {
+      router.get('/transferencias', value, {
+        preserveState: true,
+        replace: true,
+      })
+    }, 400)
+  },
+  { deep: true }
+)
+
 </script>
 
 <template>
@@ -35,31 +62,37 @@ defineProps({
 
     <div class="p-6 space-y-6">
 
-      <!-- FILTROS (estrutura pronta) -->
+      <!-- FILTROS -->
       <div class="p-4 rounded-2xl bg-white dark:bg-gray-800 shadow">
         <h2 class="font-semibold mb-3">Filtros</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
+            v-model="filtros.produto"
             type="text"
             placeholder="Produto"
             class="border rounded px-3 py-2 w-full"
           />
 
-          <select class="border rounded px-3 py-2 w-full">
+          <select
+              v-model="filtros.tipo_id"
+              class="border rounded px-3 py-2 w-full"
+            >
             <option value="">Tipo</option>
-            <option>Entrada</option>
-            <option>Saída</option>
-            <option>Transferência</option>
-            <option>Ajuste</option>
+            <option value="1">Entrada</option>
+            <option value="2">Saída</option>
+            <option value="3">Transferência</option>
+            <option value="4">Ajuste</option>
           </select>
 
           <input
+            v-model="filtros.data_inicio"
             type="date"
             class="border rounded px-3 py-2 w-full"
           />
 
           <input
+            v-model="filtros.data_fim"
             type="date"
             class="border rounded px-3 py-2 w-full"
           />
@@ -80,51 +113,53 @@ defineProps({
               <th class="px-4 py-3 text-left">Data</th>
             </tr>
           </thead>
-
+          
           <tbody>
-            <tr
-              v-for="tr in transferencias.data"
-              :key="tr.id"
-              class="border-t hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              <td class="px-4 py-3">
-                {{ item.produto.nome }}
-              </td>
+            <template v-for="transferencia in transferencias.data" :key="transferencia.id">
+              
+              <tr v-for="item in transferencia.itens" :key="item.id">
 
-              <td class="px-4 py-3">
-                <span
-                  class="px-2 py-1 rounded text-xs font-semibold"
-                  :class="{
-                    'bg-green-100 text-green-800': tr.tipo?.id === 1,
-                    'bg-red-100 text-red-800': tr.tipo?.id === 2,
-                    'bg-blue-100 text-blue-800': tr.tipo?.id === 3,
-                    'bg-yellow-100 text-yellow-800': tr.tipo?.id === 4,
-                  }"
-                >
-                  {{ tr.tipo?.nome }}
-                </span>
-              </td>
+                <td class="px-4 py-3">
+                  {{ item.produto?.nome }}
+                </td>
 
-              <td class="px-4 py-3 text-right">
-                {{ item.quantidade }}
-              </td>
+                <td class="px-4 py-3">
+                  <span
+                    class="px-2 py-1 rounded text-xs font-semibold"
+                    :class="{
+                      'bg-green-100 text-green-800': transferencia.tipo?.id === 1,
+                      'bg-red-100 text-red-800': transferencia.tipo?.id === 2,
+                      'bg-blue-100 text-blue-800': transferencia.tipo?.id === 3,
+                      'bg-yellow-100 text-yellow-800': transferencia.tipo?.id === 4,
+                    }"
+                  >
+                    {{ transferencia.tipo?.nome }}
+                  </span>
+                </td>
 
-              <td class="px-4 py-3">
-                {{ tr.origem?.nome ?? '-' }}
-              </td>
+                <td class="px-4 py-3 text-right">
+                  {{ item.quantidade }}
+                </td>
 
-              <td class="px-4 py-3">
-                {{ tr.destino?.nome ?? '-' }}
-              </td>
+                <td class="px-4 py-3">
+                  {{ transferencia.origem?.nome ?? '-' }}
+                </td>
 
-              <td class="px-4 py-3">
-                {{ tr.usuario?.name }}
-              </td>
+                <td class="px-4 py-3">
+                  {{ transferencia.destino?.nome ?? '-' }}
+                </td>
 
-              <td class="px-4 py-3">
-                {{ new Date(tr.created_at).toLocaleDateString() }}
-              </td>
-            </tr>
+                <td class="px-4 py-3">
+                  {{ transferencia.usuario?.name ?? '-' }}
+                </td>
+
+                <td class="px-4 py-3">
+                  {{ new Date(transferencia.created_at).toLocaleDateString() }}
+                </td>
+
+              </tr>
+
+            </template>
 
             <tr v-if="transferencias.data.length === 0">
               <td colspan="7" class="px-4 py-6 text-center text-gray-500">

@@ -19,23 +19,58 @@ use Inertia\Inertia;
 
 class TransferenciaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Transferencia::with([
+            'tipo',
+            'origem',
+            'destino',
+            'usuario',
+            'itens.produto',
+        ]);
+
+        // Filtro por produto
+        if ($request->filled('produto')) {
+            $query->whereHas('itens.produto', function ($q) use ($request) {
+                $q->where('nome', 'like', '%' . $request->produto . '%');
+            });
+        }
+
+        // Filtro por tipo
+        if ($request->filled('tipo_id')) {
+            $query->where('tipo_id', $request->tipo_id);
+        }
+
+        // Filtro por data inicial
+        if ($request->filled('data_inicio')) {
+            $query->whereDate('created_at', '>=', $request->data_inicio);
+        }
+
+        // Filtro por data final
+        if ($request->filled('data_fim')) {
+            $query->whereDate('created_at', '<=', $request->data_fim);
+        }
+
         return Inertia::render('Transferencias/Index', [
-            'transferencias' => Transferencia::with([
-                'tipo',
-                'origem',
-                'destino',
-                'usuario',
-                'itens.produto',
-            ])
-                ->orderBy('created_at', 'desc')
+            'transferencias' => $query
+                ->latest()
                 ->paginate(15)
+                ->withQueryString(),
+
+            'filters' => $request->only([
+                'produto',
+                'tipo_id',
+                'data_inicio',
+                'data_fim',
+            ]),
         ]);
     }
 
+
     public function create()
     {
+        //dd(auth()->id(), auth()->user());
+
         return Inertia::render('Transferencias/Create', [
             'produtos' => Produto::all(),
             'locais' => Local::all(),
@@ -76,7 +111,7 @@ class TransferenciaController extends Controller
                 'local_origem_id' => $validated['local_origem_id'] ?? null,
                 'local_destino_id' => $validated['local_destino_id'] ?? null,
                 'observacao' => $validated['observacao'] ?? null,
-                'user_id' =>auth()->id(),
+                'usuario_id' =>auth()->id(),
                 'status_id' =>1
             ]);
             //2 foreach dos itens
@@ -107,6 +142,8 @@ class TransferenciaController extends Controller
 
         return redirect()->back()->with('success', 'Movimentação registrada com sucesso.');
     }
+    // FILTROS
+
 }
 
     /* ============================================================

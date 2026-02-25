@@ -2,8 +2,6 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { Link } from "@inertiajs/vue3";
-//import route from "ziggy-js";
-//import { Ziggy } from "@/ziggy";
 import {ref, computed} from 'vue';
 
 
@@ -14,6 +12,7 @@ const props = defineProps({
   itens: [],
   alojamentos: Array,
 })
+const emit = defineEmits(['saved'])
 
 const form = useForm({
 
@@ -31,12 +30,18 @@ const locaisFiltrados = computed(() =>{
   )
 })
 
-const produtoSelecionado = ref(null)
+const produtoSelecionado = ref('')
 
-function submit() {
-  form.post(route('transferencias.store', undefined, Ziggy), {
-        onSuccess: () => emit("saved"),
-    });
+//function submit() {
+//  form.post(route('transferencias.store', undefined, Ziggy), {
+//        onSuccess: () => emit("saved")
+//    });
+//}
+
+function submit(){
+  form.post(route('transferencias.store'), {
+    onSuccess: () => emit('saved')
+  })
 }
 
 function precisaOrigem() {
@@ -47,25 +52,51 @@ function precisaDestino() {
   return ['1', '3', '4'].includes(String(form.tipo_id))
 }
 
-function adicionarProduto(){
-    if(!produtoSelecionado.value) return
+//function adicionarProduto(){
+//    if(!produtoSelecionado.value) return
+//
+//    const existe = form.itens.find(
+//        i => i.produto_id === produtoSelecionado.value.id
+//    )
+//
+//    if (existe){
+//        existe.quantidade += 1 
+//    
+//        } else{
+//            form.itens.push({
+//                produto_id: produtoSelecionado.value.id,
+//                nome: produtoSelecionado.value.nome,
+//                quantidade: 1,
+//            })
+//        }
+//        produtoSelecionado.value = null
+//}
 
-    const existe = form.itens.find(
-        i => i.produto_id === produtoSelecionado.value.id
+function adicionarProduto() {
+    if (!produtoSelecionado.value) return
+
+    const produto = props.produtos.find(
+        p => p.id === produtoSelecionado.value
     )
 
-    if (existe){
-        existe.quantidade += 1 
-    
-        } else{
-            form.itens.push({
-                produto_id: produtoSelecionado.value.id,
-                nome: produtoSelecionado.value.nome,
-                quantidade: 1,
-            })
-        }
-        produtoSelecionado.value = null
+    if (!produto) return
+
+    const existe = form.itens.find(
+        i => i.produto_id === produto.id
+    )
+
+    if (existe) {
+        existe.quantidade += 1
+    } else {
+        form.itens.push({
+            produto_id: produto.id,
+            nome: produto.nome,
+            quantidade: 1,
+        })
     }
+
+    produtoSelecionado.value = ''
+}
 
 
 function removerItem(index){
@@ -84,7 +115,7 @@ function removerItem(index){
     </template>
 
     <div class="p-6 max-w-4xl mx-auto">
-      <form @submit.prevent="submit" class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow">
+      <form @submit.prevent="submit" class="space-y-4 ">
 
         <!-- TIPO -->
         <div>
@@ -113,7 +144,7 @@ function removerItem(index){
         <div class="flex gap-2">
           <select v-model="produtoSelecionado" class="flex-1 border rounded px-3 py-2">Selecione um Produto
             <option :value="null">Selecione o produto</option>
-            <option :value="p" v-for="p in produtos" :key="p.id">
+            <option v-for="p in produtos" :key="p.id" :value="p.id">
               {{ p.nome }}
             </option>
           </select>
@@ -202,7 +233,7 @@ function removerItem(index){
         </table>
 
 
-        <!-- AÇÕES -->
+        <!-- AÇÕES   -->
         <div class="flex justify-end gap-3">
           <Link
             href="/transferencias"

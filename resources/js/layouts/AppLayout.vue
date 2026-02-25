@@ -19,7 +19,7 @@ function toggleMobile() {
       
       <!-- Título -->
       <div class="font-semibold text-base">
-        PANNELA DE PEDRA v0.5
+        PANNELA DE PEDRA v0.6
       </div>
 
       <!-- Parte direita -->
@@ -47,9 +47,7 @@ function toggleMobile() {
       <ul class="flex space-x-6 font-semibold">
         <li><Link href="/" class="hover:text-gray-200 px-2">INICIAL</Link></li>
         <li><Link href="/ordens" class="hover:text-gray-200 px-2">ORDEM DE SERVIÇO</Link></li>
-        <li><Link href="/estoque" class="hover:text-gray-200 px-2">ESTOQUE</Link></li>
-        <li><Link href="#" class="hover:text-gray-200 px-2">COZINHA</Link></li>
-        <li><Link href="/admin/" class="hover:text-gray-200 px-2">ADMINISTRAÇÃO</Link></li>
+        <li><Link href="/admin/" class="hover:text-gray-200 px-2">GESTÃO</Link></li>
       </ul>
     </nav>
 
@@ -70,9 +68,7 @@ function toggleMobile() {
 
         <Link href="/" class="block py-2 border-b border-white/20">INICIAL</Link>
         <Link href="/ordens" class="block py-2 border-b border-white/20">ORDEM DE SERVIÇO</Link>
-        <Link href="#" class="block py-2 border-b border-white/20">ESTOQUE</Link>
-        <Link href="#" class="block py-2 border-b border-white/20">COZINHA</Link>
-        <Link href="/admin/" class="block py-2 border-b border-white/20">ADMINISTRAÇÃO</Link>
+        <Link href="/admin/" class="block py-2 border-b border-white/20">GESTÃO</Link>
 
         <Link href="/logout" method="post" as="button" class="block py-2 text-red-300 font-normal mt-3">
           Sair

@@ -10,7 +10,9 @@ class ProdutoController extends Controller
 {
     public function index()
     {
-        $produtos = Produto::orderBy('nome')->get();
+        $produtos = Produto::with('tipo')
+            ->orderBy('nome')
+            ->get();
 
         return Inertia::render('Produtos/Index', [
             'produtos' => $produtos
@@ -27,6 +29,7 @@ class ProdutoController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'unidade' => 'required|string|max:20',
+            'tipo_id' => 'required|string|max:50',
             'preco_custo' => 'required|numeric|min:0',
             'estoque_minimo' => 'required|integer|min:0',
             'ativo' => 'boolean'
@@ -35,6 +38,7 @@ class ProdutoController extends Controller
         Produto::create([
             'nome' => $request->nome,
             'unidade' => $request->unidade,
+            'tipo_id' => $request->tipo_id,
             'preco_custo' => $request->preco_custo,
             'estoque_minimo' => $request->estoque_minimo,
             'ativo' => $request->ativo ?? true,
@@ -58,6 +62,7 @@ class ProdutoController extends Controller
         $request->validate([
             'nome' => 'required|string|max:255',
             'unidade' => 'required|string|max:20',
+            'tipo_id' => 'required|string|max:50',
             'preco_custo' => 'required|numeric|min:0',
             'estoque_minimo' => 'required|integer|min:0',
             'ativo' => 'boolean'
@@ -68,6 +73,7 @@ class ProdutoController extends Controller
         $produto->update([
             'nome' => $request->nome,
             'unidade' => $request->unidade,
+            'tipo_id' => $request->tipo_id,
             'preco_custo' => $request->preco_custo,
             'estoque_minimo' => $request->estoque_minimo,
             'ativo' => $request->ativo,

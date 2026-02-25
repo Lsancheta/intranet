@@ -47,39 +47,6 @@ const props = defineProps({
           </p>
         </div>
 
-        <!-- Painel 3 - Avisos -->
-        <div class="bg-white shadow rounded-2xl p-6">
-          <h2 class="text-lg font-semibold text-gray-700 mb-4">
-            📢 Avisos e Atualizações
-          </h2>
-
-          <div class="space-y-4">
-            <div>
-              <h3 class="font-semibold text-gray-800">
-                Fase de testes do sistema
-              </h3>
-              <p class="text-sm text-gray-600">
-                A primeira versão entrou em testes com a equipe de manutenção.
-              </p>
-              <span class="text-xs text-gray-400">
-                02/12/2025
-              </span>
-            </div>
-
-            <div class="border-t pt-4">
-              <h3 class="font-semibold text-gray-800">
-                Nova funcionalidade
-              </h3>
-              <p class="text-sm text-gray-600">
-                Agora é possível visualizar fotos das OS em tela cheia.
-              </p>
-              <span class="text-xs text-gray-400">
-                31/01/2026
-              </span>
-            </div>
-          </div>
-        </div>
-
         <!-- Painel 2 - Ordens de Serviço -->
         <div class="bg-white shadow rounded-2xl p-6">
           <Link href="/ordens">
@@ -115,6 +82,39 @@ const props = defineProps({
             </div>
           </Link>
         </div>
+        <!-- Painel 3 - Avisos -->
+        <div class="bg-white shadow rounded-2xl p-6">
+          <h2 class="text-lg font-semibold text-gray-700 mb-4">
+            📢 Avisos e Atualizações
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <h3 class="font-semibold text-gray-800">
+                Fase de testes do sistema
+              </h3>
+              <p class="text-sm text-gray-600">
+                A primeira versão entrou em testes com a equipe de manutenção.
+              </p>
+              <span class="text-xs text-gray-400">
+                02/12/2025
+              </span>
+            </div>
+
+            <div class="border-t pt-4">
+              <h3 class="font-semibold text-gray-800">
+                Nova funcionalidade
+              </h3>
+              <p class="text-sm text-gray-600">
+                Agora é possível visualizar fotos das OS em tela cheia.
+              </p>
+              <span class="text-xs text-gray-400">
+                31/01/2026
+              </span>
+            </div>
+          </div>
+        </div>
+
 
         <!-- Painel 4 - Reservado -->
         <div class="bg-white shadow rounded-2xl p-6 flex items-center justify-center">

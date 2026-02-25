@@ -7,6 +7,7 @@ const props = defineProps({
         default: () => ({
             nome: '',
             unidade: '',
+            tipo_id: '',
             preco_custo: 0,
             estoque_minimo: 0,
             ativo: true,
@@ -22,6 +23,7 @@ const props = defineProps({
 const form = useForm({
     nome: props.produto.nome,
     unidade: props.produto.unidade,
+    tipo_id: props.produto.tipo_id,
     preco_custo: props.produto.preco_custo,
     estoque_minimo: props.produto.estoque_minimo,
     ativo: props.produto.ativo,
@@ -43,8 +45,38 @@ function submit() {
 
         <div>
             <label class="block text-sm font-medium">Unidade</label>
-            <input v-model="form.unidade" type="text" class="border rounded px-3 py-2 w-full">
-            <div v-if="form.errors.unidade" class="text-red-500 text-sm">{{ form.errors.unidade }}</div>
+
+            <select
+                v-model="form.unidade"
+                class="border rounded px-3 py-2 w-full"
+            >
+                <option value="">Selecione</option>
+                <option value="Kg">Quilograma (kg)</option>
+                <option value="Litros">Litro (L)</option>
+                <option value="Unidade">Unidade</option>
+                <option value="Pacote">Pacote</option>
+                <option value="Caixa">Caixa</option>
+            </select>
+
+            <div v-if="form.errors.unidade" class="text-red-500 text-sm">
+                {{ form.errors.unidade }}
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">Categoria</label>
+            <select 
+                v-model="form.tipo_id"
+                class ="border rounded px-3 py-2 w-full"
+            >
+                <option value="">Selecione</option>
+                <option value= 1 >Não Perecível</option>
+                <option value= 2 >Proteína</option>
+                <option value= 3 >Hortifruti</option>
+            </select>
+            <div v-if ="form.errors.tipo_id" class="text-red-500 text-sm">
+                {{ form.errors.tipo_id }}
+            </div>
         </div>
 
         <div>

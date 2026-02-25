@@ -6,6 +6,7 @@ import { ref, computed } from 'vue'
 // Props vindas do controller
 const props = defineProps({
     produtos: Array,
+    tipos: Array,
 });
 
 // Busca
@@ -103,6 +104,7 @@ function excluir(id) {
                             <th class="px-4 py-2 text-left text-sm font-semibold">ID</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Nome</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Unidade</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold">Categoria</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Ações</th>
                         </tr>
                     </thead>
@@ -116,6 +118,7 @@ function excluir(id) {
                             <td class="px-4 py-2">{{ produto.id }}</td>
                             <td class="px-4 py-2">{{ produto.nome }}</td>
                             <td class="px-4 py-2">{{ produto.unidade }}</td>
+                            <td class="px-4 py-2">{{ produto.tipo?.nome }}</td>
 
                             <td class="px-4 py-2">
                                 <div class="flex gap-2">

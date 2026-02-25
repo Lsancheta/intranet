@@ -15,7 +15,7 @@ class Transferencia extends Model
         'local_origem_id',
         'local_destino_id',
         'alojamento_id',
-        'user_id',
+        'usuario_id',
         'status_id',
         'observacao'
     ];
@@ -45,6 +45,6 @@ class Transferencia extends Model
     }
 
     public function usuario(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 }

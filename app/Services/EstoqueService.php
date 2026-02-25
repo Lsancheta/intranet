@@ -5,6 +5,7 @@ use App\Models\EstoqueItem;
 use App\Models\DepositoItem;
 use App\Models\Local;
 use App\Models\TipoTransferencia;
+use App\Models\Produto;
 use DomainException;
 
 class EstoqueService{
@@ -164,7 +165,14 @@ class EstoqueService{
     }
 
     protected function validarDeposito($produtoId, $localId, $quantidade): void{
+        $produto = Produto::with('tipo')->findOrFail($produtoId);
+        //proteina e hortifruti podem ser utilizados sem a transferencia
+        if (in_array($produto->tipo->nome, ['Hortifruti', 'Proteina'])){
+            return;
+        }
+
         $item = $this->obterDepositoItem($produtoId, $localId);
+
         if ($item->quantidade < $quantidade){
             throw new DomainException('Quantidade Insuficiente no depósito.');
         }
@@ -172,6 +180,11 @@ class EstoqueService{
     }
 
     protected function validarEstoque($produtoId, $localId, $quantidade): void{
+        $produto = Produto::with('tipo')->findOrFail($produtoId);
+        if (in_array($produto->tipo->nome, ['Hortifruti', 'Proteina'])){
+            return;
+        }
+
         $item = $this->obterEstoqueItem($produtoId, $localId);
         if($item->quantidade < $quantidade){
             throw new DomainException('Quantidade Insuficiente no estoque.');

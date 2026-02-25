@@ -18,10 +18,19 @@ class EstoqueController extends Controller
      */
     public function index()
     {
+        
+        $estoque = EstoqueItem::with(['produto.tipo','local']) ->get();
+        //dd($estoque->pluck('produto.tipo.nome'));
+        
         return Inertia::render('Estoque/Index', [
             'total_produtos' => Produto::count(),
             'total_deposito' => DepositoItem::sum('quantidade'),
             'total_estoque' => EstoqueItem::sum('quantidade'),
+
+            'estoqueNaoPerecivel'=>$estoque->where('produto.tipo.nome', 'Nao Perecivel')->values(),
+            'estoqueProteina'=> $estoque->where('produto.tipo.nome', 'Proteina')->values(),
+            'estoqueHortifruti'=> $estoque->where('produto.tipo.nome', 'Hortifruti')->values(),
+           
 
             'produtos_baixo_estoque' => EstoqueItem::with('produto')
                 ->join('produtos','produtos.id', '=','estoque_items.produto_id')
@@ -47,6 +56,31 @@ class EstoqueController extends Controller
             
             //previsao de falta
             'previsao_reposicao' => $this->calcularReposicao(),
+            
+            //estoque dos itens
+            'produtos_estoque'=>Produto::withSum('estoqueItems','quantidade')->get(),
+            'produtos_deposito'=>Produto::withSum('depositoItems','quantidade')->get(),
+        
+            'naoPereciveis' => Produto::with('tipo')
+                ->withSum('estoqueItems', 'quantidade')
+                ->withSum('depositoItems', 'quantidade')
+                ->whereHas('tipo', function ($q) {
+                    $q->where('id', 1);
+                })->get(),
+
+            'proteinas' => Produto::with('tipo')
+                ->withSum('estoqueItems', 'quantidade')
+                ->withSum('depositoItems', 'quantidade')
+                ->whereHas('tipo', function ($q) {
+                    $q->where('id', 2);
+                })->get(),
+
+            'hortifrutis' => Produto::with('tipo')
+                ->withSum('estoqueItems', 'quantidade')
+                ->withSum('depositoItems', 'quantidade')
+                ->whereHas('tipo', function ($q) {
+                    $q->where('id', 3);
+                })->get(),
         ]);
     }
 
@@ -88,5 +122,15 @@ class EstoqueController extends Controller
         }
 
         return $resultado;
+    }
+
+    private function calc_estoque(){
+        $estoque1 = Produto::withSum('estoqueItems','quantidade')->get();
+        return $estoque1;
+        $estoque2 = Produto::withSum('depositoItems','quantidade')->get();
+        return $estoque2;
+        
+        $soma = $estoque1->sum('estoque_items_sum_quantidade') + $estoque2->sum('deposito_items_sum_quantidade');
+        return $soma;
     }
 }
