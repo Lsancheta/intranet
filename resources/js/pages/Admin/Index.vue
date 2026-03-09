@@ -38,18 +38,20 @@ const openMenu = ref(false)
 
         <!-- Painel 2 - Colaboradores da cutrale -->
         <div class="bg-white shadow rounded-2xl p-6 hover:shadow-lg transition-shadow duration-500">
-          <h2 class="text-lg font-semibold text-gray-700 mb-4 justify-center flex items-center">
-            Quantitativo
-          </h2>
-          <div class="flex items-center justify-center h-32">
-            <span class="text-5xl font-bold text-gray-800">
-              <img src="/storage/app/public/icons/quantitativo_icon.png" alt="icone de moradores" class="w-16 h-16 mb-6">
-            </span>
-          </div>
+          <Link href="/quantitativo/">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4 justify-center flex items-center">
+              Quantitativo
+            </h2>
+            <div class="flex items-center justify-center h-32">
+              <span class="text-5xl font-bold text-gray-800">
+                <img src="/storage/app/public/icons/quantitativo_icon.png" alt="icone de moradores" class="w-16 h-16 mb-6">
+              </span>
+            </div>
 
-          <p class="text-center text-sm text-gray-500 mt-2">
-            Total de Moradores cadastrados
-          </p>
+            <p class="text-center text-sm text-gray-500 mt-2">
+              Total de Moradores cadastrados
+            </p>
+          </Link>
         </div>
                 <!-- Painel 3 - Auditoria-->
         <div class="bg-white shadow rounded-2xl p-6 hover:shadow-lg transition-shadow duration-500">

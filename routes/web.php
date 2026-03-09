@@ -14,6 +14,7 @@ use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\TransferenciaController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuantitativoController;
 
 
 /*
@@ -154,7 +155,7 @@ Route::middleware(['auth'])->group(function(){
 
         // Página inicial da Administração
         Route::get('/', [AdminController::class, 'index'])->name('index');
-             // usuários
+        Route::get('/quantitativo', [AdminController::class, 'quantitativo'])->name('quantitativo');
 
     });
 
@@ -183,6 +184,14 @@ Route::middleware(['auth'])->group(function(){
         // Route::get('/{id}/edit', [TransferenciaController::class, 'edit'])->name('edit');
         // Route::put('/{id}', [TransferenciaController::class, 'update'])->name('update');
 
+    });
+
+    Route::middleware(['auth', 'setor:1'])->prefix('quantitativo')->name('quantitativo.')->group(function(){
+        Route::get('/',[QuantitativoController::class, 'index'])->name('index');
+        Route::get('/criar',[QuantitativoController::class, 'create'])->name('create');
+        Route::post('/', [QuantitativoController::class, 'store'])->name('store');
+        Route::put('/{id}', [QuantitativoController::class, 'update'])->name('update');
+        Route::delete('/{id}', [QuantitativoController::class, 'destroy'])->name('destroy');
     });
 
 });
