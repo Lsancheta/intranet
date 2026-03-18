@@ -90,9 +90,9 @@
                     Finalizar OS
                 </button>
             </div>
-            <!-- Adicionar foto-->
+            <!-- Tirar foto-->
             <div class="mt-6" v-if="ordem.status_id !==4">
-                <h2 class="font-semibold mb-2 text-lg">Adicionar Foto</h2>
+                <h2 class="font-semibold mb-2 text-lg">Tirar Foto</h2>
                 <input
                     type="file"
                     accept="image/*"
@@ -105,7 +105,25 @@
                     @click="enviarFoto"
                     class="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                     >
-                    Enviar Foto
+                    Tirar Foto
+                </button>
+            </div>
+            
+            <!-- Adicionar foto da galeria-->
+            <div class="mt-6" v-if="ordem.status_id !==4">
+                <h2 class="font-semibold mb-2 text-lg">Adicionar Foto da Galeria</h2>
+                <input
+                    type="file"
+                    accept="image/*"
+                    @change="e => formFoto.foto = e.target.files[0]"
+                    class="w-full border rounded-lg p-2"
+                >
+
+                <button
+                    @click="enviarFoto"
+                    class="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                    >
+                    Adicionar Foto da Galeria
                 </button>
             </div>
             <!-- Mostrar as fotos-->
