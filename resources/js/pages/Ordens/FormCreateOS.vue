@@ -220,13 +220,25 @@ async function compressedAndAssign(e){
                     </option>
                 </select>
             </div>
-            <!-- Adicionar foto-->
+            <!-- Tirar foto-->
             <div>
-                <label class="font-medium text-sm md:text-base">Adicionar Foto</label>
+                <label class="font-medium text-sm md:text-base">Tirar Foto</label>
                 <input
                     type="file"
                     accept="image/*"
                     capture="environment"
+                    multiple
+                    name="fotos[]"
+                    @change="compressedAndAssign"
+                    class="w-full border rounded-lg p-2"
+                >
+            </div>
+            <!-- Selecionar da galeria-->
+            <div>
+                <label class="font-medium text-sm md:text-base">Selecionar Foto</label>
+                <input
+                    type="file"
+                    accept="image/*"
                     multiple
                     name="fotos[]"
                     @change="compressedAndAssign"
